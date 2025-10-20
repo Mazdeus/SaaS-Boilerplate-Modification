@@ -26,6 +26,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(defaultTheme);
   const [isLoading, setIsLoading] = useState(true);
+  const [availableThemes, setAvailableThemes] = useState<ThemeConfig[]>([]);
 
   // Register all themes on mount
   useEffect(() => {
@@ -43,9 +44,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       setCurrentTheme(theme);
     }
 
+    // Get available themes after registration
+    const themes = themeManager.getAvailableThemes();
+    setAvailableThemes(themes);
+
     setIsLoading(false);
 
     logger.info('[ThemeProvider] Initialized with theme:', theme?.name);
+    logger.info('[ThemeProvider] Available themes:', themes.length);
   }, []);
 
   // Set theme function
@@ -57,11 +63,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         setCurrentTheme(theme);
       }
     }
-  }, []);
-
-  // Available themes
-  const availableThemes = useMemo(() => {
-    return themeManager.getAvailableThemes();
   }, []);
 
   const value = useMemo(
