@@ -18,7 +18,7 @@ export default function ThemeSwitcherPage() {
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="mb-4 text-4xl font-bold text-gray-900">
-            🎨 Theme Switcher Demo
+            Theme Switcher Demo
           </h1>
           <p className="text-lg text-gray-600">
             Switch between different themes to see the visual changes

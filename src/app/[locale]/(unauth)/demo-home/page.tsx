@@ -104,7 +104,7 @@ export default function DemoHomePage() {
           </Link>
 
           <Link
-            href="/dashboard/plugins"
+            href="/demo/plugins"
             className="group rounded-lg border-2 border-green-200 bg-gradient-to-br from-green-50 to-green-100 p-8 transition-all hover:border-green-400 hover:shadow-lg"
           >
             <h2 className="mb-2 text-2xl font-bold text-green-900">
@@ -120,7 +120,7 @@ export default function DemoHomePage() {
           </Link>
 
           <Link
-            href="/dashboard/export-demo"
+            href="/demo/export-demo"
             className="group rounded-lg border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-orange-100 p-8 transition-all hover:border-orange-400 hover:shadow-lg"
           >
             <h2 className="mb-2 text-2xl font-bold text-orange-900">

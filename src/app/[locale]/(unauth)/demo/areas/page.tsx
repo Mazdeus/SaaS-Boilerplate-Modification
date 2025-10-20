@@ -65,7 +65,7 @@ export default function AreasPage() {
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="mb-4 text-4xl font-bold text-gray-900">
-            🎨 Areas / Regions Demo
+            Areas / Regions Demo
           </h1>
           <p className="text-lg text-gray-600">
             Dynamic component placement system in action
