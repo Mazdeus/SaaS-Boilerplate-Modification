@@ -71,3 +71,91 @@
     @apply border-border;
   }
 }
+
+/* ============================================================================
+   THEME SYSTEM STYLES
+   Custom styles for dynamic theme switching
+   ============================================================================ */
+
+/* Dark Theme */
+html.theme-dark,
+html.theme-dark body {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+html.theme-dark header {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+html.theme-dark .bg-white {
+  background-color: #1e293b !important;
+}
+
+html.theme-dark .text-gray-900 {
+  color: #f1f5f9 !important;
+}
+
+html.theme-dark .text-gray-700 {
+  color: #cbd5e1 !important;
+}
+
+html.theme-dark .text-gray-600 {
+  color: #94a3b8 !important;
+}
+
+html.theme-dark .border-gray-300,
+html.theme-dark .border-gray-200 {
+  border-color: #334155 !important;
+}
+
+html.theme-dark .bg-gray-50 {
+  background-color: #0f172a !important;
+}
+
+/* Modern Theme */
+html.theme-modern,
+html.theme-modern body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: #ffffff !important;
+}
+
+html.theme-modern header {
+  background: rgba(102, 126, 234, 0.9) !important;
+  backdrop-filter: blur(10px);
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+html.theme-modern .bg-white {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+html.theme-modern .text-gray-900 {
+  color: #ffffff !important;
+}
+
+html.theme-modern .text-gray-700 {
+  color: #f3f4f6 !important;
+}
+
+html.theme-modern .text-gray-600 {
+  color: #e5e7eb !important;
+}
+
+html.theme-modern .border-gray-300,
+html.theme-modern .border-gray-200 {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+html.theme-modern .bg-gray-50 {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Default Theme - no overrides needed, uses original Tailwind classes */
+html.theme-default body {
+  background-color: #ffffff;
+  color: #1f2937;
+}

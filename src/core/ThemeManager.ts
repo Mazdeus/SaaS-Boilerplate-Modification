@@ -111,8 +111,9 @@ class ThemeManager {
     }
 
     const root = document.documentElement;
+    const body = document.body;
 
-    // Apply colors
+    // Apply colors as CSS variables
     if (theme.colors) {
       Object.entries(theme.colors).forEach(([key, value]) => {
         root.style.setProperty(`--theme-${key}`, value);
@@ -135,6 +136,24 @@ class ThemeManager {
 
     // Update data attribute for CSS selectors
     root.setAttribute('data-theme', theme.id);
+
+    // Apply theme-specific styles directly to body for immediate visual feedback
+    if (theme.id === 'dark') {
+      body.style.backgroundColor = theme.colors.background;
+      body.style.color = theme.colors.foreground;
+      root.classList.add('theme-dark');
+      root.classList.remove('theme-default', 'theme-modern');
+    } else if (theme.id === 'modern') {
+      body.style.backgroundColor = theme.colors.background;
+      body.style.color = theme.colors.foreground;
+      root.classList.add('theme-modern');
+      root.classList.remove('theme-default', 'theme-dark');
+    } else {
+      body.style.backgroundColor = '#ffffff';
+      body.style.color = '#1f2937';
+      root.classList.add('theme-default');
+      root.classList.remove('theme-modern', 'theme-dark');
+    }
 
     logger.info(`[ThemeManager] Theme applied: ${theme.name}`);
   }
