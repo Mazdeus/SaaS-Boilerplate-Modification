@@ -13,24 +13,38 @@ type SidebarState = {
 };
 
 export function useSidebar() {
+  // Initialize with false to avoid SSR issues (window not available on server)
+  const [isMobile, setIsMobile] = useState(false);
   const [sidebarState, setSidebarState] = useState<SidebarState>({
     left: false,
     right: false,
   });
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detect mobile/desktop
+  // Detect mobile/desktop and set initial sidebar state AFTER mount
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    const checkMobileAndSetInitialState = () => {
+      const mobile = window.innerWidth < 1024; // lg breakpoint
+      setIsMobile(mobile);
+
+      // Set initial sidebar state based on screen size
+      setSidebarState({
+        left: !mobile, // Auto-open on desktop
+        right: !mobile, // Auto-open on desktop
+      });
     };
 
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    // Run once on mount to set initial state
+    checkMobileAndSetInitialState();
 
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    // Handle window resize
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); // Run only once on mount
 
   // Toggle sidebar
   const toggleSidebar = useCallback((position: SidebarPosition) => {

@@ -52,10 +52,16 @@ export function Header({
               Home
             </Link>
             <Link
+              href="/company-profile"
+              className="text-sm font-medium text-gray-700 hover:text-blue-600"
+            >
+              Company Profile
+            </Link>
+            <Link
               href="/demo-home"
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
             >
-              Demo Home
+              Demo
             </Link>
             <Link
               href="/dashboard"
@@ -68,12 +74,6 @@ export function Header({
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
             >
               Themes
-            </Link>
-            <Link
-              href="/demo/areas"
-              className="text-sm font-medium text-gray-700 hover:text-blue-600"
-            >
-              Areas
             </Link>
           </nav>
         </div>
