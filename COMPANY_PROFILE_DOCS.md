@@ -3,6 +3,17 @@
 
 ---
 
+## 📝 Latest Updates
+
+**October 26, 2025 - Design Improvement:**
+- ✨ Updated `CompanyAbout.tsx` with modern layout design
+- 🖼️ Added professional image grid (1 large + 2 small images from Unsplash)
+- 📝 Restructured content to "Who are we" & "What we do" sections
+- 🎨 Improved visual hierarchy with "About us" label and main heading
+- 📊 Enhanced statistics display with cleaner design
+
+---
+
 ## 🎯 Overview
 
 **Company Profile** adalah implementasi lengkap yang mendemonstrasikan **SEMUA 6 konsep templating** yang telah dipelajari di Minggu ke-8 dalam konteks real-world application. Halaman ini menunjukkan bagaimana templating system dapat digunakan untuk membuat website company profile yang professional, scalable, dan mudah di-maintain.
@@ -33,7 +44,7 @@
 ```
 
 **Reusable Partials Created:**
-- `CompanyAbout.tsx` - About section dengan story & mission
+- `CompanyAbout.tsx` - Modern about section dengan image grid layout, "Who are we" & "What we do"
 - `CompanyServices.tsx` - Services grid dengan 4 service cards
 - `CompanySlideshowPlugin.tsx` - Dynamic hero slideshow (registered to HERO area)
 
@@ -149,7 +160,7 @@ src/
 │       └── page.tsx                       # Main company profile page (150+ lines)
 │
 ├── components/company/
-│   ├── CompanyAbout.tsx                   # About section partial (100+ lines)
+│   ├── CompanyAbout.tsx                   # Modern about section with image grid (120+ lines)
 │   └── CompanyServices.tsx                # Services section partial (120+ lines)
 │
 ├── plugins/
@@ -203,15 +214,29 @@ src/
 **Component:** `CompanyAbout.tsx`
 
 **Features:**
-- Our Story card
-- Our Mission card
-- Company statistics (Clients, Team, Projects, Years)
-- Grid layout responsive
+- Modern hero-style layout with "About us" label
+- Main heading: "We are more than Digital Agency"
+- **Image Grid Layout:**
+  - 1 large image on the left (team collaboration)
+  - 2 smaller images stacked on the right (team meetings/working)
+  - Responsive grid with proper aspect ratios
+  - Images from Unsplash for professional look
+- **Content Sections:**
+  - "Who are we" - Company description and team background
+  - "What we do" - Services and methodology explanation
+  - Both with "Learn More →" CTAs
+- **Statistics Section:**
+  - 500+ Clients
+  - 50+ Team Members
+  - 100+ Projects
+  - 4+ Years
+  - Color-coded metrics with large numbers
 
-**Content:**
-- Company founding story
-- Mission statement
-- Key metrics visualization
+**Layout:**
+- Gray background (bg-gray-50) for subtle contrast
+- Two-column grid for text sections
+- Full-width stats bar at bottom
+- Clean, modern design matching reference image
 
 ---
 
@@ -779,11 +804,14 @@ langsung digunakan untuk client."
 ```
 1. Show Header & Footer (same as other pages)
 2. Open VS Code: Show CompanyAbout.tsx
-3. Explain: "Ini adalah reusable partial dengan props"
-4. Show CompanyServices.tsx
-5. Explain: "Partials ini bisa digunakan di halaman lain"
-6. Show page.tsx import statements
-7. Point out MainLayout wrapper
+3. Explain: "Ini adalah reusable partial dengan modern image grid layout"
+4. Point out: "We are more than Digital Agency" heading
+5. Show image grid (1 large + 2 small images)
+6. Show "Who are we" dan "What we do" sections
+7. Show CompanyServices.tsx
+8. Explain: "Partials ini bisa digunakan di halaman lain"
+9. Show page.tsx import statements
+10. Point out MainLayout wrapper
 ```
 
 **4. Demonstrate Area/Region System ⭐ (5 min)**
@@ -945,10 +973,11 @@ http://localhost:3000/company-profile
    - Widget registration logic
    - Section composition
 
-2. ✅ `src/components/company/CompanyAbout.tsx` (100+ lines)
-   - Reusable About section
-   - Story & Mission cards
-   - Company statistics
+2. ✅ `src/components/company/CompanyAbout.tsx` (120+ lines)
+   - Reusable About section with modern layout
+   - Image grid (1 large + 2 small images)
+   - "Who are we" & "What we do" sections
+   - Company statistics with color-coded metrics
 
 3. ✅ `src/components/company/CompanyServices.tsx` (120+ lines)
    - Reusable Services section
@@ -999,8 +1028,10 @@ http://localhost:3000/company-profile
 
 **What to Say:**
 > "Company Profile menggunakan MainLayout yang sama dengan halaman lain. 
-> Ini demonstrasi Layout reusability. CompanyAbout dan CompanyServices adalah 
-> reusable partials yang dapat digunakan di halaman manapun dengan props."
+> Ini demonstrasi Layout reusability. CompanyAbout adalah reusable partial dengan 
+> modern layout - ada image grid, 'Who are we', 'What we do', dan statistics. 
+> CompanyServices juga reusable partial. Keduanya dapat digunakan di halaman manapun 
+> dengan props."
 
 **Code to Show:**
 ```tsx
@@ -1070,8 +1101,10 @@ plugins/
 ### **5. Reusability**
 
 **What to Say:**
-> "Partials seperti CompanyAbout dapat digunakan di About page, Company page, 
-> bahkan Marketing page. Sekali buat, pakai berkali-kali. DRY principle."
+> "Partials seperti CompanyAbout dengan image grid dan text sections-nya dapat 
+> digunakan di About page, Company page, bahkan Marketing page. Layout modern 
+> dengan 3 gambar profesional plus 'Who are we' & 'What we do' - sekali buat, 
+> pakai berkali-kali. DRY principle."
 
 ---
 
