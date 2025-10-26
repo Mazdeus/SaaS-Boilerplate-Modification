@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useArea } from '@/contexts/AreaContext';
 import { areaManager } from '@/core/AreaManager';
 import { AREAS } from '@/core/types';
+import { useRouteCleanup } from '@/hooks/useRouteCleanup';
 import {
   pluginRegistry,
   QuickActionsWidget,
@@ -69,6 +70,9 @@ const availablePlugins = [
 export default function PluginsPage() {
   const { registerComponent } = useArea();
   const [plugins, setPlugins] = useState(availablePlugins);
+
+  // Clean up areas when route changes to prevent duplicates
+  useRouteCleanup({ areas: [AREAS.HERO, AREAS.SIDEBAR_LEFT, AREAS.SIDEBAR_RIGHT] });
 
   useEffect(() => {
     // Register all plugins

@@ -11,6 +11,7 @@ import { AreaRenderer } from '@/components/AreaRenderer';
 import { useArea } from '@/contexts/AreaContext';
 import { areaManager } from '@/core/AreaManager';
 import { AREAS } from '@/core/types';
+import { useRouteCleanup } from '@/hooks/useRouteCleanup';
 import {
   QuickActionsWidget,
   RecentPostsWidget,
@@ -21,38 +22,47 @@ import {
 export default function AreasPage() {
   const { registerComponent } = useArea();
 
+  // Clean up HERO area when route changes to prevent duplicates
+  useRouteCleanup({ areas: [AREAS.HERO] });
+
   useEffect(() => {
-    // Register plugins to various areas for demo
-    registerComponent(AREAS.HERO, {
-      id: 'slideshow-demo',
-      component: SlideshowPlugin,
-      priority: 10,
-      enabled: true,
-      areaId: AREAS.HERO,
-    });
+    // Import areaManager for cleanup
+    import('@/core/AreaManager').then(({ areaManager }) => {
+      // Clear HERO area first to prevent duplicates
+      areaManager.clearArea(AREAS.HERO);
 
-    registerComponent(AREAS.SIDEBAR_LEFT, {
-      id: 'user-stats-demo',
-      component: UserStatsWidget,
-      priority: 10,
-      enabled: true,
-      areaId: AREAS.SIDEBAR_LEFT,
-    });
+      // Register plugins to various areas for demo
+      registerComponent(AREAS.HERO, {
+        id: 'slideshow-demo',
+        component: SlideshowPlugin,
+        priority: 10,
+        enabled: true,
+        areaId: AREAS.HERO,
+      });
 
-    registerComponent(AREAS.SIDEBAR_LEFT, {
-      id: 'quick-actions-demo',
-      component: QuickActionsWidget,
-      priority: 20,
-      enabled: true,
-      areaId: AREAS.SIDEBAR_LEFT,
-    });
+      registerComponent(AREAS.SIDEBAR_LEFT, {
+        id: 'user-stats-demo',
+        component: UserStatsWidget,
+        priority: 10,
+        enabled: true,
+        areaId: AREAS.SIDEBAR_LEFT,
+      });
 
-    registerComponent(AREAS.SIDEBAR_RIGHT, {
-      id: 'recent-posts-demo',
-      component: RecentPostsWidget,
-      priority: 10,
-      enabled: true,
-      areaId: AREAS.SIDEBAR_RIGHT,
+      registerComponent(AREAS.SIDEBAR_LEFT, {
+        id: 'quick-actions-demo',
+        component: QuickActionsWidget,
+        priority: 20,
+        enabled: true,
+        areaId: AREAS.SIDEBAR_LEFT,
+      });
+
+      registerComponent(AREAS.SIDEBAR_RIGHT, {
+        id: 'recent-posts-demo',
+        component: RecentPostsWidget,
+        priority: 10,
+        enabled: true,
+        areaId: AREAS.SIDEBAR_RIGHT,
+      });
     });
   }, [registerComponent]);
 

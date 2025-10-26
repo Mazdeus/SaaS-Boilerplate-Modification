@@ -34,6 +34,13 @@ export function AreaProvider({ children }: { children: React.ReactNode }) {
 
   const registerComponent = useCallback(
     (area: AreaType, component: AreaComponent) => {
+      // Check if component is already registered to prevent unnecessary re-renders
+      const existing = areaManager.getComponent(area, component.id);
+      if (existing && existing.component === component.component) {
+        logger.info(`[AreaContext] Component "${component.id}" already registered to "${area}", skipping...`);
+        return;
+      }
+
       areaManager.register(area, component);
       refresh();
     },

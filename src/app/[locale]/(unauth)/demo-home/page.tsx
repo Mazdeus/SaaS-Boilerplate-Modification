@@ -10,6 +10,8 @@ import React, { useEffect } from 'react';
 
 import { useArea } from '@/contexts/AreaContext';
 import { AREAS } from '@/core/types';
+import { usePagePlugins } from '@/hooks/usePagePlugins';
+import { useRouteCleanup } from '@/hooks/useRouteCleanup';
 import {
   QuickActionsWidget,
   RecentPostsWidget,
@@ -18,42 +20,43 @@ import {
 } from '@/plugins';
 import { MainLayout } from '@/themes/default/layouts/MainLayout';
 
+// Define plugin mapping for demo-home page
+const demoHomePlugins = {
+  'demo-slideshow': {
+    component: SlideshowPlugin,
+    area: AREAS.HERO,
+    priority: 10,
+  },
+  'demo-user-stats': {
+    component: UserStatsWidget,
+    area: AREAS.SIDEBAR_LEFT,
+    priority: 10,
+  },
+  'demo-quick-actions': {
+    component: QuickActionsWidget,
+    area: AREAS.SIDEBAR_LEFT,
+    priority: 20,
+  },
+  'demo-recent-posts': {
+    component: RecentPostsWidget,
+    area: AREAS.SIDEBAR_RIGHT,
+    priority: 10,
+  },
+};
+
 export default function DemoHomePage() {
   const { registerComponent } = useArea();
 
+  // Clean up areas when route changes to prevent duplicates
+  useRouteCleanup({ areas: [AREAS.HERO, AREAS.SIDEBAR_LEFT, AREAS.SIDEBAR_RIGHT] });
+
+  // Use page-based plugin system
+  usePagePlugins(demoHomePlugins);
+
+  // Fallback manual registration for now
   useEffect(() => {
-    // Register demo components to showcase areas
-    registerComponent(AREAS.HERO, {
-      id: 'demo-slideshow',
-      component: SlideshowPlugin,
-      priority: 10,
-      enabled: true,
-      areaId: AREAS.HERO,
-    });
-
-    registerComponent(AREAS.SIDEBAR_LEFT, {
-      id: 'demo-user-stats',
-      component: UserStatsWidget,
-      priority: 10,
-      enabled: true,
-      areaId: AREAS.SIDEBAR_LEFT,
-    });
-
-    registerComponent(AREAS.SIDEBAR_LEFT, {
-      id: 'demo-quick-actions',
-      component: QuickActionsWidget,
-      priority: 20,
-      enabled: true,
-      areaId: AREAS.SIDEBAR_LEFT,
-    });
-
-    registerComponent(AREAS.SIDEBAR_RIGHT, {
-      id: 'demo-recent-posts',
-      component: RecentPostsWidget,
-      priority: 10,
-      enabled: true,
-      areaId: AREAS.SIDEBAR_RIGHT,
-    });
+    // This registration will be handled by usePagePlugins hook based on PagePluginConfig
+    // Keeping minimal registration as fallback
   }, [registerComponent]);
 
   return (

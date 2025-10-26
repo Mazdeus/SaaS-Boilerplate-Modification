@@ -35,11 +35,13 @@ class AreaManager {
     const existingIndex = components.findIndex(c => c.id === component.id);
 
     if (existingIndex >= 0) {
-      // Update existing component
+      // Update existing component instead of duplicating
       components[existingIndex] = component;
+      logger.info(`[AreaManager] Updated existing component "${component.id}" in area "${area}"`);
     } else {
       // Add new component
       components.push(component);
+      logger.info(`[AreaManager] Registered new component "${component.id}" to area "${area}"`);
     }
 
     // Sort by priority (lower number = higher priority)
@@ -47,8 +49,20 @@ class AreaManager {
 
     this.areas.set(area, components);
     this.saveState();
+  }
 
-    logger.info(`[AreaManager] Registered component "${component.id}" to area "${area}"`);
+  /**
+   * Register component with page-based filtering
+   */
+  registerForPage(area: AreaType, component: AreaComponent, pathname: string): void {
+    // Import dynamically to avoid circular dependency
+    import('../core/PagePluginConfig').then(({ isPluginAllowedOnPage }) => {
+      if (isPluginAllowedOnPage(pathname, component.id)) {
+        this.register(area, component);
+      } else {
+        logger.warn(`[AreaManager] Component "${component.id}" not allowed on page "${pathname}"`);
+      }
+    });
   }
 
   /**
@@ -144,12 +158,73 @@ class AreaManager {
   }
 
   /**
-   * Clear all areas
+   * Clear specific area and optionally save state
+   */
+  clearAreaSilent(area: AreaType): void {
+    this.areas.set(area, []);
+    // Don't save state to prevent localStorage conflicts
+    logger.info(`[AreaManager] Cleared area "${area}" silently`);
+  }
+
+  /**
+   * Clear components from multiple areas at once
+   */
+  clearAreas(areas: AreaType[]): void {
+    areas.forEach((area) => {
+      this.areas.set(area, []);
+    });
+    this.saveState();
+    logger.info(`[AreaManager] Cleared areas: ${areas.join(', ')}`);
+  }
+
+  /**
+   * Clear components by specific pattern or prefix
+   */
+  clearComponentsByPattern(pattern: string): void {
+    this.areas.forEach((components, area) => {
+      const filtered = components.filter(c => !c.id.includes(pattern));
+      this.areas.set(area, filtered);
+    });
+    this.saveState();
+    logger.info(`[AreaManager] Cleared components matching pattern: ${pattern}`);
+  }
+
+  /**
+   * Clear all areas and components
    */
   clearAll(): void {
     this.areas.clear();
     this.saveState();
-    logger.info('[AreaManager] Cleared all areas');
+    logger.info('[AreaManager] Cleared all areas and components');
+  }
+
+  /**
+   * Clear areas and register only page-appropriate components
+   */
+  initializeForPage(pathname: string, components: Array<{ area: AreaType; component: AreaComponent }>): void {
+    // Import dynamically to avoid circular dependency
+    import('../core/PagePluginConfig').then(({ getPagePluginConfig }) => {
+      const config = getPagePluginConfig(pathname);
+
+      if (!config) {
+        logger.warn(`[AreaManager] No config found for page: ${pathname}`);
+        return;
+      }
+
+      // Clear all areas first
+      Object.values(this.areas.keys()).forEach((area) => {
+        this.clearArea(area as AreaType);
+      });
+
+      // Register only allowed components
+      components.forEach(({ area, component }) => {
+        if (config.allowedPlugins.includes('*') || config.allowedPlugins.includes(component.id)) {
+          this.register(area, component);
+        }
+      });
+
+      logger.info(`[AreaManager] Initialized ${components.length} components for page: ${pathname}`);
+    });
   }
 
   // ============================================================================

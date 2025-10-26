@@ -18,54 +18,53 @@ import { CompanyAbout } from '@/components/company/CompanyAbout';
 import { CompanyServices } from '@/components/company/CompanyServices';
 import { useArea } from '@/contexts/AreaContext';
 import { AREAS } from '@/core/types';
+import { usePagePlugins } from '@/hooks/usePagePlugins';
+import { useRouteCleanup } from '@/hooks/useRouteCleanup';
 import { CompanyInfoWidget } from '@/plugins/company-info/CompanyInfoWidget';
 import { CompanySlideshowPlugin } from '@/plugins/company-slideshow/CompanySlideshowPlugin';
 import { CompanyTeamWidget } from '@/plugins/company-team/CompanyTeamWidget';
 import { CompanyValuesWidget } from '@/plugins/company-values/CompanyValuesWidget';
 import { MainLayout } from '@/themes/default/layouts/MainLayout';
 
+// Define plugin mapping for this page
+const companyPagePlugins = {
+  'company-slideshow': {
+    component: CompanySlideshowPlugin,
+    area: AREAS.HERO,
+    priority: 10,
+  },
+  'company-info-widget': {
+    component: CompanyInfoWidget,
+    area: AREAS.SIDEBAR_LEFT,
+    priority: 5,
+  },
+  'company-values-widget': {
+    component: CompanyValuesWidget,
+    area: AREAS.SIDEBAR_LEFT,
+    priority: 15,
+  },
+  'company-team-widget': {
+    component: CompanyTeamWidget,
+    area: AREAS.SIDEBAR_RIGHT,
+    priority: 5,
+  },
+};
+
 export default function CompanyProfilePage() {
   const { registerComponent } = useArea();
 
-  // Register company-specific widgets to areas
+  // Clean up areas when route changes to prevent duplicates
+  useRouteCleanup({ areas: [AREAS.HERO, AREAS.SIDEBAR_LEFT, AREAS.SIDEBAR_RIGHT] });
+
+  // Use page-based plugin system
+  usePagePlugins(companyPagePlugins);
+
+  // Fallback manual registration (can be removed once page plugin system is stable)
   useEffect(() => {
-    // Small delay to ensure AreaManager is ready
+    // This will be handled by usePagePlugins, but keeping as fallback
     const timer = setTimeout(() => {
-      // Register Company Slideshow to Hero Area (Dynamic Hero!)
-      registerComponent(AREAS.HERO, {
-        id: 'company-slideshow',
-        component: CompanySlideshowPlugin,
-        priority: 10,
-        enabled: true,
-        areaId: AREAS.HERO,
-      });
-
-      // Register Company Info Widget to Left Sidebar
-      registerComponent(AREAS.SIDEBAR_LEFT, {
-        id: 'company-info-widget',
-        component: CompanyInfoWidget,
-        priority: 5,
-        enabled: true,
-        areaId: AREAS.SIDEBAR_LEFT,
-      });
-
-      // Register Company Values Widget to Left Sidebar
-      registerComponent(AREAS.SIDEBAR_LEFT, {
-        id: 'company-values-widget',
-        component: CompanyValuesWidget,
-        priority: 15,
-        enabled: true,
-        areaId: AREAS.SIDEBAR_LEFT,
-      });
-
-      // Register Company Team Widget to Right Sidebar
-      registerComponent(AREAS.SIDEBAR_RIGHT, {
-        id: 'company-team-widget',
-        component: CompanyTeamWidget,
-        priority: 5,
-        enabled: true,
-        areaId: AREAS.SIDEBAR_RIGHT,
-      });
+      // The usePagePlugins hook should handle registration automatically
+      // based on PagePluginConfig
     }, 100);
 
     return () => clearTimeout(timer);
