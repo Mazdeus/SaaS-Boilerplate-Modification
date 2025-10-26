@@ -5,6 +5,12 @@
 
 ## 📝 Latest Updates
 
+**October 26, 2025 - Flow Documentation:**
+- 📖 Added comprehensive narrative explanation in [NARRATIVE_EXPLANATION.md](./NARRATIVE_EXPLANATION.md)
+- 🔄 Added detailed execution flow diagrams with ASCII art
+- 📊 Documented 8-phase lifecycle from user navigation to final render
+- 💡 Explained all 6 templating concepts in context of execution flow
+
 **October 26, 2025 - Design Improvement:**
 - ✨ Updated `CompanyAbout.tsx` with modern layout design
 - 🖼️ Added professional image grid (1 large + 2 small images from Unsplash)
