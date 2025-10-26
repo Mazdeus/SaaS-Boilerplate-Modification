@@ -41,7 +41,7 @@ const defaultPosts: Post[] = [
 
 export function RecentPostsWidget({ posts = defaultPosts }: { posts?: Post[] }) {
   return (
-    <div className="rounded-lg border bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-gray-200 bg-white p-4">
       <h3 className="mb-4 text-lg font-semibold text-gray-900">
         Recent Posts
       </h3>
@@ -50,7 +50,7 @@ export function RecentPostsWidget({ posts = defaultPosts }: { posts?: Post[] }) 
         {posts.map(post => (
           <div
             key={post.id}
-            className="border-b pb-3 last:border-b-0 last:pb-0"
+            className="border-b border-gray-100 pb-3 last:border-b-0 last:pb-0"
           >
             <h4 className="mb-1 font-medium text-gray-900 hover:text-blue-600">
               <button

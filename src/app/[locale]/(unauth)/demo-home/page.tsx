@@ -198,15 +198,97 @@ export default function DemoHomePage() {
           </div>
         </div>
 
-        {/* Sidebar Demos */}
+        {/* Collapsible Sidebar Demo */}
+        <div className="rounded-lg border-2 border-blue-300 bg-gradient-to-br from-blue-50 to-indigo-50 p-8 shadow-lg">
+          <h2 className="mb-4 text-2xl font-bold text-blue-900">
+            🍔 NEW: Collapsible Sidebars!
+          </h2>
+
+          <div className="mb-6 space-y-3">
+            <p className="text-lg text-blue-800">
+              <strong>Click the burger icons (☰)</strong>
+              {' '}
+              in the header to toggle sidebars:
+            </p>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-lg bg-white p-4 shadow">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="text-2xl">👈</span>
+                  <h3 className="font-semibold text-gray-900">Left Sidebar</h3>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Click the left burger menu to toggle left sidebar with User Stats & Quick Actions widgets
+                </p>
+              </div>
+
+              <div className="rounded-lg bg-white p-4 shadow">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="text-2xl">👉</span>
+                  <h3 className="font-semibold text-gray-900">Right Sidebar</h3>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Click the right burger menu to toggle right sidebar with Recent Posts widget
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg bg-white/80 p-4">
+            <h3 className="mb-2 font-semibold text-blue-900">How It Works:</h3>
+            <ul className="space-y-2 text-sm text-blue-800">
+              <li className="flex items-start gap-2">
+                <span className="text-green-600">✓</span>
+                <span>
+                  <strong>Desktop:</strong>
+                  {' '}
+                  Sidebars collapse/expand smoothly
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600">✓</span>
+                <span>
+                  <strong>Mobile:</strong>
+                  {' '}
+                  Sidebars slide in as overlay with backdrop
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600">✓</span>
+                <span>
+                  <strong>Dynamic Area Rendering:</strong>
+                  {' '}
+                  Widgets loaded from Area System
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600">✓</span>
+                <span>
+                  <strong>Part of Templating:</strong>
+                  {' '}
+                  Layout & Partial system demonstration
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Original Sidebar Info */}
         <div className="rounded-lg border bg-gray-50 p-6">
           <h2 className="mb-4 text-xl font-semibold text-gray-900">
-            Check the Sidebars!
+            About the Sidebars
           </h2>
           <p className="text-gray-600">
-            Notice the widgets in the left and right sidebars? Those are rendered
-            dynamically using the Area System. They're registered as plugins and
-            can be enabled/disabled from the Plugin Manager.
+            The widgets in the sidebars are rendered dynamically using the
+            {' '}
+            <strong>Area/Region System</strong>
+            .
+            They're registered as plugins and can be enabled/disabled from the Plugin Manager.
+            This demonstrates the
+            {' '}
+            <strong>modular architecture</strong>
+            {' '}
+            of our templating system.
           </p>
         </div>
       </div>
