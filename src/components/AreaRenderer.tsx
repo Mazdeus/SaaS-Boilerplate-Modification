@@ -5,10 +5,10 @@
  * Renders all components registered to a specific area
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useArea } from '@/contexts/AreaContext';
-import type { AreaType } from '@/core/types';
+import type { AreaComponent, AreaType } from '@/core/types';
 
 type AreaRendererProps = {
   area: AreaType;
@@ -22,7 +22,23 @@ export function AreaRenderer({
   fallback = null,
 }: AreaRendererProps) {
   const { getComponents } = useArea();
-  const components = getComponents(area);
+  const [components, setComponents] = useState<AreaComponent[]>([]);
+
+  // Update components when they change
+  useEffect(() => {
+    const updateComponents = () => {
+      const newComponents = getComponents(area);
+      setComponents(newComponents);
+    };
+
+    // Initial load
+    updateComponents();
+
+    // Poll for changes (simple solution)
+    const interval = setInterval(updateComponents, 200);
+
+    return () => clearInterval(interval);
+  }, [area, getComponents]);
 
   if (components.length === 0) {
     return <>{fallback}</>;
