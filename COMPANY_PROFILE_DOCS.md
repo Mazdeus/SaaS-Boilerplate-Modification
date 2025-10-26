@@ -183,7 +183,285 @@ src/
 
 ---
 
-## 📄 Page Sections
+## � Alur Eksekusi Company Profile (Flow Diagram)
+
+### **📍 Step-by-Step Execution Flow:**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ 1. USER NAVIGATES TO /company-profile                              │
+└─────────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 2. NEXT.JS ROUTING                                                  │
+│    📂 src/app/[locale]/(unauth)/company-profile/page.tsx           │
+│    - Next.js loads the page component                              │
+│    - Client-side component ('use client')                          │
+└─────────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 3. COMPONENT INITIALIZATION                                         │
+│    function CompanyProfilePage() {                                  │
+│      const { registerComponent } = useArea();  // Get Area Context │
+│      useEffect(() => { ... });                // Setup widgets     │
+│      return <MainLayout>...</MainLayout>;     // Render            │
+│    }                                                                │
+└─────────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 4. WIDGET REGISTRATION (useEffect runs after mount)                │
+│    setTimeout(() => {  // 100ms delay                              │
+│      ┌────────────────────────────────────────────────┐           │
+│      │ Register to AREAS.HERO:                        │           │
+│      │ - CompanySlideshowPlugin (priority: 10)        │           │
+│      └────────────────────────────────────────────────┘           │
+│      ┌────────────────────────────────────────────────┐           │
+│      │ Register to AREAS.SIDEBAR_LEFT:                │           │
+│      │ - CompanyInfoWidget (priority: 5)    ← Shows 1st│          │
+│      │ - CompanyValuesWidget (priority: 15) ← Shows 2nd│          │
+│      └────────────────────────────────────────────────┘           │
+│      ┌────────────────────────────────────────────────┐           │
+│      │ Register to AREAS.SIDEBAR_RIGHT:               │           │
+│      │ - CompanyTeamWidget (priority: 5)              │           │
+│      └────────────────────────────────────────────────┘           │
+│    }, 100);                                                        │
+└─────────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 5. MAINLAYOUT RENDERS                                               │
+│    📂 src/themes/default/layouts/MainLayout.tsx                    │
+│                                                                     │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ <Header />                                               │   │
+│    │ - Navigation bar with Company Profile link              │   │
+│    │ - Theme switcher                                         │   │
+│    │ - Sidebar toggle buttons                                │   │
+│    └─────────────────────────────────────────────────────────┘   │
+│                         ↓                                          │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ <AreaRenderer area={AREAS.HERO} />                      │   │
+│    │ - Polls every 200ms for registered components           │   │
+│    │ - Renders: CompanySlideshowPlugin                       │   │
+│    │ - Auto-rotating 4 slides hero                           │   │
+│    └─────────────────────────────────────────────────────────┘   │
+│                         ↓                                          │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ <main> - 3 Column Layout                                │   │
+│    │                                                           │   │
+│    │  ┌────────────┐ ┌──────────────┐ ┌────────────┐       │   │
+│    │  │ SIDEBAR    │ │   CONTENT    │ │ SIDEBAR    │       │   │
+│    │  │ LEFT       │ │              │ │ RIGHT      │       │   │
+│    │  │            │ │              │ │            │       │   │
+│    │  │ • Info     │ │ {children}   │ │ • Team     │       │   │
+│    │  │ • Values   │ │              │ │            │       │   │
+│    │  └────────────┘ └──────────────┘ └────────────┘       │   │
+│    │                                                           │   │
+│    └─────────────────────────────────────────────────────────┘   │
+│                         ↓                                          │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ <Footer />                                               │   │
+│    └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 6. CONTENT AREA RENDERS (children prop)                            │
+│                                                                     │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ <CompanyAbout />                                         │   │
+│    │ 📂 src/components/company/CompanyAbout.tsx              │   │
+│    │ - About us header                                        │   │
+│    │ - Image grid (1 large + 2 small)                        │   │
+│    │ - "Who are we" & "What we do"                           │   │
+│    │ - Statistics (500+ clients, etc)                        │   │
+│    └─────────────────────────────────────────────────────────┘   │
+│                         ↓                                          │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ <CompanyServices />                                      │   │
+│    │ 📂 src/components/company/CompanyServices.tsx           │   │
+│    │ - 4 service cards (Web, Mobile, Cloud, Security)        │   │
+│    │ - Feature lists with checkmarks                         │   │
+│    └─────────────────────────────────────────────────────────┘   │
+│                         ↓                                          │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ Testimonials Section (Inline)                           │   │
+│    │ - 3 client testimonials                                 │   │
+│    │ - Star ratings                                           │   │
+│    └─────────────────────────────────────────────────────────┘   │
+│                         ↓                                          │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ Contact CTA Section (Inline)                            │   │
+│    │ - Blue gradient background                              │   │
+│    │ - Email & Phone buttons                                 │   │
+│    └─────────────────────────────────────────────────────────┘   │
+│                         ↓                                          │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ Templating Info Banner (Inline)                         │   │
+│    │ - Educational info about 6 concepts                     │   │
+│    └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 7. SIDEBAR WIDGETS RENDER (Dynamic Areas)                          │
+│                                                                     │
+│    LEFT SIDEBAR:                                                   │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ <CollapsibleSidebar area={AREAS.SIDEBAR_LEFT}>          │   │
+│    │   <AreaRenderer> polls for components...                │   │
+│    │                                                           │   │
+│    │   ┌─────────────────────────────────────────────────┐   │   │
+│    │   │ CompanyInfoWidget (priority: 5) ← Renders 1st  │   │   │
+│    │   │ - Company logo & name                           │   │   │
+│    │   │ - Contact: email, phone, location               │   │   │
+│    │   │ - Social media links                            │   │   │
+│    │   └─────────────────────────────────────────────────┘   │   │
+│    │                    ↓                                      │   │
+│    │   ┌─────────────────────────────────────────────────┐   │   │
+│    │   │ CompanyValuesWidget (priority: 15) ← Renders 2nd│  │   │
+│    │   │ - 4 core values cards                           │   │   │
+│    │   │ - Excellence, Collaboration, Innovation, etc    │   │   │
+│    │   └─────────────────────────────────────────────────┘   │   │
+│    │                                                           │   │
+│    └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│    RIGHT SIDEBAR:                                                  │
+│    ┌─────────────────────────────────────────────────────────┐   │
+│    │ <CollapsibleSidebar area={AREAS.SIDEBAR_RIGHT}>         │   │
+│    │   <AreaRenderer> polls for components...                │   │
+│    │                                                           │   │
+│    │   ┌─────────────────────────────────────────────────┐   │   │
+│    │   │ CompanyTeamWidget (priority: 5)                 │   │   │
+│    │   │ - 4 team members                                │   │   │
+│    │   │ - CEO, CTO, Lead Dev, Product Manager           │   │   │
+│    │   │ - "View Full Team" button                       │   │   │
+│    │   └─────────────────────────────────────────────────┘   │   │
+│    │                                                           │   │
+│    └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 8. FINAL RENDERED PAGE                                              │
+│                                                                     │
+│    ╔═══════════════════════════════════════════════════════════╗  │
+│    ║ HEADER (with nav, theme switcher, sidebar toggles)       ║  │
+│    ╠═══════════════════════════════════════════════════════════╣  │
+│    ║ HERO SLIDESHOW (CompanySlideshowPlugin - auto-rotating)  ║  │
+│    ╠═══╦═══════════════════════════════════════════════╦═══════╣  │
+│    ║ S ║                                               ║ S   R ║  │
+│    ║ I ║  ABOUT SECTION (Image Grid + Content)        ║ I   I ║  │
+│    ║ D ║  ─────────────────────────────────────        ║ D   G ║  │
+│    ║ E ║  SERVICES SECTION (4 Cards)                  ║ E   H ║  │
+│    ║ B ║  ─────────────────────────────────────        ║ B   T ║  │
+│    ║ A ║  TESTIMONIALS (3 Cards)                      ║ A     ║  │
+│    ║ R ║  ─────────────────────────────────────        ║ R     ║  │
+│    ║   ║  CONTACT CTA (Blue Section)                  ║       ║  │
+│    ║ L ║  ─────────────────────────────────────        ║ T   S ║  │
+│    ║ E ║  TEMPLATING INFO BANNER                      ║ E   I ║  │
+│    ║ F ║                                               ║ A   D ║  │
+│    ║ T ║                                               ║ M   E ║  │
+│    ╠═══╩═══════════════════════════════════════════════╩═══════╣  │
+│    ║ FOOTER (copyright, links, etc)                            ║  │
+│    ╚═══════════════════════════════════════════════════════════╝  │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🎯 Konsep Templating dalam Alur:
+
+### **1. Layout & Partial System** 🏗️
+```
+MainLayout (Wrapper)
+  └── Reusable Partials:
+      ├── Header ✅ Shared
+      ├── Footer ✅ Shared
+      ├── CompanyAbout ✅ Reusable
+      └── CompanyServices ✅ Reusable
+```
+
+### **2. Area/Region System** 📍
+```
+Area Registration Flow:
+  1. Page loads → useEffect triggers
+  2. setTimeout 100ms → Allow AreaManager to initialize
+  3. registerComponent() → Register widgets to areas
+  4. AreaRenderer polls every 200ms → Detect new components
+  5. Components render → Display in designated areas
+
+Priority System:
+  Lower number = Higher priority = Renders first
+  - CompanyInfoWidget (5) → Shows before → CompanyValuesWidget (15)
+```
+
+### **3. Plugin System** 🔌
+```
+Independent Plugins:
+  ├── CompanySlideshowPlugin/ → Self-contained slideshow
+  ├── CompanyInfoWidget/ → Independent info card
+  ├── CompanyTeamWidget/ → Standalone team display
+  └── CompanyValuesWidget/ → Separate values showcase
+
+Each plugin:
+  ✅ No hard dependencies
+  ✅ Can be enabled/disabled
+  ✅ Configurable via props
+  ✅ Registered dynamically
+```
+
+### **4. Component Registration Lifecycle** ⚙️
+```
+PHASE 1: Initial Render
+  └── AreaRenderer shows empty/fallback
+
+PHASE 2: useEffect Execution (after mount)
+  └── setTimeout 100ms
+      └── registerComponent() calls
+          └── AreaManager.register()
+              └── Store in Map<AreaType, Component[]>
+
+PHASE 3: AreaRenderer Polling (every 200ms)
+  └── getComponents(area)
+      └── Fetch from AreaManager
+          └── Filter by enabled
+              └── Sort by priority
+                  └── setComponents() → Trigger re-render
+
+PHASE 4: Components Render
+  └── Display in designated areas
+```
+
+---
+
+## 🔍 Debugging Flow:
+
+### **Langkah-langkah Debug:**
+
+```
+1. Check Console Logs:
+   [AreaProvider] Initialized
+   [AreaManager] Registered component "company-slideshow" to area "hero"
+   [AreaManager] Registered component "company-info-widget" to area "sidebar-left"
+   ...
+
+2. Check React DevTools:
+   <AreaProvider>
+     <MainLayout>
+       <AreaRenderer area="hero">
+         <CompanySlideshowPlugin />
+       </AreaRenderer>
+       ...
+
+3. Check Network Tab:
+   - No additional API calls needed
+   - All components client-side rendered
+
+4. Check localStorage:
+   Key: "area-manager-state"
+   Value: { "hero": [...], "sidebar-left": [...], ... }
+```
+
+---
+
+## �📄 Page Sections
 
 ### **1. Hero Section (Dynamic Slideshow)**
 
