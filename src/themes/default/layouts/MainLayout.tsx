@@ -56,10 +56,9 @@ export function MainLayout({ children, className = '' }: MainLayoutProps) {
           onClose={() => closeSidebar('left')}
           isMobile={isMobile}
           fallback={(
-            <div className="rounded-lg border border-dashed border-gray-300 p-4 text-center text-sm text-gray-500">
-              No widgets in left sidebar
-              <br />
-              <span className="text-xs">
+            <div className="border-b border-gray-200 bg-gray-50 p-6 text-center">
+              <p className="text-sm text-gray-500">No widgets in left sidebar</p>
+              <span className="text-xs text-gray-400">
                 Register plugins to this area
               </span>
             </div>
@@ -88,10 +87,9 @@ export function MainLayout({ children, className = '' }: MainLayoutProps) {
           onClose={() => closeSidebar('right')}
           isMobile={isMobile}
           fallback={(
-            <div className="rounded-lg border border-dashed border-gray-300 p-4 text-center text-sm text-gray-500">
-              No widgets in right sidebar
-              <br />
-              <span className="text-xs">
+            <div className="border-b border-gray-200 bg-gray-50 p-6 text-center">
+              <p className="text-sm text-gray-500">No widgets in right sidebar</p>
+              <span className="text-xs text-gray-400">
                 Register plugins to this area
               </span>
             </div>

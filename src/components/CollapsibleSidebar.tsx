@@ -120,10 +120,8 @@ export function CollapsibleSidebar({
       } shrink-0 overflow-hidden`}
     >
       {isOpen && (
-        <div className="h-full p-4">
-          <div className="space-y-4">
-            <AreaRenderer area={area} fallback={fallback} />
-          </div>
+        <div className="h-full overflow-y-auto">
+          <AreaRenderer area={area} fallback={fallback} />
         </div>
       )}
     </aside>

@@ -24,7 +24,7 @@ const teamMembers: TeamMember[] = [
 
 export function CompanyTeamWidget() {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
+    <div className="border-b border-gray-200 bg-white p-6">
       <h3 className="mb-4 text-lg font-semibold text-gray-900">
         Our Leadership Team
       </h3>
