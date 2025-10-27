@@ -63,12 +63,12 @@ export function Header({
             >
               Demo
             </Link>
-            <Link
+            {/* <Link
               href="/dashboard"
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
             >
               Dashboard
-            </Link>
+            </Link> */}
             <Link
               href="/demo/theme-switcher"
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
@@ -82,7 +82,7 @@ export function Header({
         <div className="flex items-center gap-2">
           <ThemeSwitcher />
 
-          <Link
+          {/* <Link
             href="/sign-in"
             className="hidden text-sm font-medium text-gray-700 hover:text-blue-600 sm:inline-block"
           >
@@ -94,7 +94,7 @@ export function Header({
             className="hidden rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 sm:inline-block"
           >
             Get Started
-          </Link>
+          </Link> */}
 
           {/* Right Sidebar Toggle Button */}
           {onToggleRightSidebar && (
