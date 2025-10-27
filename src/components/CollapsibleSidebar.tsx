@@ -68,7 +68,7 @@ export function CollapsibleSidebar({
 
         {/* Sidebar */}
         <aside
-          className={`fixed top-0 z-50 h-full w-80 bg-white shadow-2xl transition-transform duration-300 ease-in-out${
+          className={`fixed top-0 z-50 h-full w-[280px] bg-white shadow-2xl transition-transform duration-300 ease-in-out sm:w-[320px] md:w-[360px]${
             position === 'left' ? 'left-0' : 'right-0'
           } ${
             isOpen
@@ -116,7 +116,7 @@ export function CollapsibleSidebar({
   return (
     <aside
       className={`border-r border-gray-200 bg-white transition-all duration-300 ease-in-out ${
-        isOpen ? 'w-64 opacity-100' : 'w-0 border-0 opacity-0'
+        isOpen ? 'w-72 opacity-100' : 'w-0 border-0 opacity-0'
       } shrink-0 overflow-hidden`}
     >
       {isOpen && (
