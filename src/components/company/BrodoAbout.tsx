@@ -1,0 +1,148 @@
+'use client';
+
+/**
+ * BRODO About Section
+ * Company profile about section for BRODO brand
+ * Part of Layout & Partial System - Templating Praktikum Week 9
+ */
+
+import React from 'react';
+
+export function BrodoAbout() {
+  return (
+    <section id="about" className="bg-gray-50 py-20">
+      <div className="container mx-auto px-4">
+        {/* About us Header */}
+        <div className="mb-12 text-center">
+          <p className="mb-2 text-sm font-medium text-blue-600">Tentang Kami</p>
+          <h2 className="mb-4 text-4xl font-bold text-gray-900">
+            Siapa Kami
+          </h2>
+          <p className="mx-auto max-w-3xl text-lg text-gray-600">
+            BRODO didirikan di Bandung pada tahun 2010 oleh insinyur muda yang melihat peluang: 
+            menyajikan sepatu stylish, berkualitas, dan terjangkau untuk pria di Indonesia.
+          </p>
+        </div>
+
+        {/* Image Grid */}
+        <div className="mb-16 grid grid-cols-1 gap-4 md:grid-cols-2">
+          {/* Large image on the left */}
+          <div className="overflow-hidden rounded-lg">
+            <div
+              className="h-96 w-full bg-cover bg-center"
+              style={{ backgroundImage: 'url(/assets/img-stock-2.webp)' }}
+            />
+          </div>
+
+          {/* Two smaller images on the right */}
+          <div className="grid grid-rows-2 gap-4">
+            <div className="overflow-hidden rounded-lg">
+              <div
+                className="h-full w-full bg-cover bg-center"
+                style={{ backgroundImage: 'url(/assets/img-stock-3.webp)' }}
+              />
+            </div>
+            <div className="overflow-hidden rounded-lg">
+              <div
+                className="h-full w-full bg-cover bg-center"
+                style={{ backgroundImage: 'url(/assets/img-stock-4.webp)' }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Mission & Vision */}
+        <div className="mb-16 grid gap-8 md:grid-cols-2">
+          {/* Mission */}
+          <div className="rounded-lg border border-gray-200 bg-white p-8">
+            <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-blue-100">
+              <span className="text-2xl">🎯</span>
+            </div>
+            <h3 className="mb-4 text-2xl font-bold text-gray-900">Misi Kami</h3>
+            <p className="text-gray-600">
+              Memberdayakan industri alas kaki lokal dan memperkuat kebanggaan terhadap produk Indonesia. 
+              Kami memanfaatkan kerajinan lokal di Cibaduyut dan material premium untuk menghasilkan 
+              sepatu berkualitas internasional.
+            </p>
+          </div>
+
+          {/* Vision */}
+          <div className="rounded-lg border border-gray-200 bg-white p-8">
+            <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-purple-100">
+              <span className="text-2xl">🚀</span>
+            </div>
+            <h3 className="mb-4 text-2xl font-bold text-gray-900">Visi Kami</h3>
+            <p className="text-gray-600">
+              Menjadi brand gaya hidup pria terdepan di Asia Tenggara. Kami berkomitmen untuk terus 
+              berinovasi dan menghadirkan produk yang tidak hanya stylish, tetapi juga mencerminkan 
+              identitas dan kebanggaan Indonesia.
+            </p>
+          </div>
+        </div>
+
+        {/* Company Info Stats */}
+        <div className="mb-8 rounded-lg bg-white p-8 shadow-sm">
+          <h3 className="mb-6 text-center text-2xl font-bold text-gray-900">
+            BRODO dalam Angka
+          </h3>
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            <div className="text-center">
+              <div className="mb-2 text-4xl font-bold text-blue-600">2010</div>
+              <div className="text-sm font-medium text-gray-700">Tahun Berdiri</div>
+            </div>
+            <div className="text-center">
+              <div className="mb-2 text-4xl font-bold text-green-600">50+</div>
+              <div className="text-sm font-medium text-gray-700">Tim Berpengalaman</div>
+            </div>
+            <div className="text-center">
+              <div className="mb-2 text-4xl font-bold text-purple-600">100K+</div>
+              <div className="text-sm font-medium text-gray-700">Produk Terjual</div>
+            </div>
+            <div className="text-center">
+              <div className="mb-2 text-4xl font-bold text-orange-600">15+</div>
+              <div className="text-sm font-medium text-gray-700">Tahun Pengalaman</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Founders Info */}
+        <div className="rounded-lg border border-blue-200 bg-blue-50 p-8">
+          <h3 className="mb-6 text-center text-2xl font-bold text-gray-900">
+            Para Pendiri
+          </h3>
+          <div className="grid gap-8 md:grid-cols-2">
+            {/* Founder 1 */}
+            <div className="flex flex-col items-center text-center">
+              <img 
+                src="/assets/muhammad-yukka.webp" 
+                alt="Muhammad Yukka Harlanda"
+                className="mb-4 size-24 rounded-full object-cover"
+              />
+              <h4 className="mb-1 text-lg font-bold text-gray-900">Muhammad Yukka Harlanda</h4>
+              <p className="mb-3 text-sm font-medium text-blue-600">Co-Founder & CEO</p>
+              <p className="text-sm text-gray-600">
+                Insinyur muda yang memulai BRODO dari kebutuhan pribadi akan sepatu berkualitas. 
+                Dengan visi kuat, ia membawa BRODO menjadi brand lokal yang diakui.
+              </p>
+            </div>
+
+            {/* Founder 2 */}
+            <div className="flex flex-col items-center text-center">
+              <img 
+                src="/assets/putera-dwi.webp" 
+                alt="Putera Dwi Karunia"
+                className="mb-4 size-24 rounded-full object-cover"
+              />
+              <h4 className="mb-1 text-lg font-bold text-gray-900">Putera Dwi Karunia</h4>
+              <p className="mb-3 text-sm font-medium text-blue-600">Co-Founder & Creative Partner</p>
+              <p className="text-sm text-gray-600">
+                Partner kreatif yang memastikan setiap desain BRODO memiliki karakter unik dan 
+                sesuai dengan gaya hidup pria Indonesia modern.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

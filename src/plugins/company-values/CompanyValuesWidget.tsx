@@ -18,27 +18,27 @@ type Value = {
 const values: Value[] = [
   {
     id: 1,
-    icon: '🎯',
-    title: 'Excellence',
-    description: 'We strive for excellence in everything we do',
+    icon: '🚀',
+    title: 'Innovation',
+    description: 'Constantly pushing boundaries',
   },
   {
     id: 2,
-    icon: '🤝',
-    title: 'Collaboration',
-    description: 'Teamwork makes the dream work',
+    icon: '⭐',
+    title: 'Quality',
+    description: 'Delivering excellence in every project',
   },
   {
     id: 3,
-    icon: '💡',
-    title: 'Innovation',
-    description: 'Always pushing boundaries and thinking ahead',
+    icon: '🤝',
+    title: 'Collaboration',
+    description: 'Working together towards success',
   },
   {
     id: 4,
-    icon: '🌟',
-    title: 'Integrity',
-    description: 'Honesty and transparency in all we do',
+    icon: '📈',
+    title: 'Growth',
+    description: 'Continuous learning and improvement',
   },
 ];
 
@@ -46,7 +46,7 @@ export function CompanyValuesWidget() {
   return (
     <div className="border-b border-gray-200 bg-white p-6">
       <h3 className="mb-4 text-lg font-semibold text-gray-900">
-        Our Core Values
+        Nilai & Filosofi Kami
       </h3>
 
       <div className="space-y-3">

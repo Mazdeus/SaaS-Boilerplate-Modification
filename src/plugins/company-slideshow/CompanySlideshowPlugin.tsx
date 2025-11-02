@@ -15,6 +15,7 @@ type Slide = {
   subtitle: string;
   description: string;
   background: string;
+  backgroundImage?: string;
   ctaText: string;
   ctaLink: string;
 };
@@ -22,39 +23,43 @@ type Slide = {
 const slides: Slide[] = [
   {
     id: 1,
-    title: 'Welcome to SaaS Template',
-    subtitle: 'Building the Future of Software',
-    description: 'We are a leading technology company dedicated to creating innovative solutions that help businesses grow and succeed in the digital age.',
+    title: 'BRODO',
+    subtitle: 'Langkah Awal Gaya Lokal',
+    description: 'Brand sepatu lokal Indonesia yang berkomitmen menghadirkan produk berkualitas tinggi, nyaman, dan penuh karakter, hasil karya anak bangsa dari Bandung.',
     background: 'from-blue-600 to-blue-800',
-    ctaText: 'Get in Touch',
-    ctaLink: '#contact',
+    backgroundImage: '/assets/img-stock-1.webp',
+    ctaText: 'Lihat Produk',
+    ctaLink: '#products',
   },
   {
     id: 2,
     title: 'Innovation & Excellence',
-    subtitle: 'Transforming Ideas into Reality',
-    description: 'With over 4 years of experience, we deliver cutting-edge solutions that drive business growth and digital transformation.',
+    subtitle: 'Dari Bandung untuk Indonesia',
+    description: 'Sejak 2010, kami memanfaatkan kerajinan lokal Cibaduyut dan material premium untuk menciptakan alas kaki stylish yang terjangkau untuk pria Indonesia.',
     background: 'from-purple-600 to-purple-800',
-    ctaText: 'Our Services',
-    ctaLink: '#services',
+    backgroundImage: '/assets/img-stock-7.webp',
+    ctaText: 'Tentang Kami',
+    ctaLink: '#about',
   },
   {
     id: 3,
-    title: 'Trusted by 500+ Companies',
-    subtitle: 'Your Success is Our Mission',
-    description: 'Join hundreds of satisfied clients who trust us to deliver exceptional software solutions that exceed expectations.',
+    title: 'Quality Craftsmanship',
+    subtitle: 'Produk Berkualitas Internasional',
+    description: 'Setiap produk BRODO dirancang dengan detail, menggunakan bahan pilihan dan dikerjakan oleh pengrajin berpengalaman untuk hasil terbaik.',
     background: 'from-green-600 to-green-800',
-    ctaText: 'View Testimonials',
-    ctaLink: '#testimonials',
+    backgroundImage: '/assets/img-stock-10.webp',
+    ctaLink: '#values',
+    ctaText: 'Nilai Kami',
   },
   {
     id: 4,
-    title: 'Expert Team at Your Service',
-    subtitle: '50+ Talented Professionals',
-    description: 'Our dedicated team of experts is committed to understanding your needs and delivering solutions that make a real difference.',
+    title: 'Join the Movement',
+    subtitle: 'Live Epic with Your Shoes',
+    description: 'Bergabunglah dengan ribuan pria Indonesia yang telah mempercayai BRODO sebagai pilihan alas kaki mereka. Wujudkan gaya hidup yang epic!',
     background: 'from-orange-600 to-orange-800',
-    ctaText: 'Meet Our Team',
-    ctaLink: '#about',
+    backgroundImage: '/assets/img-stock-13.webp',
+    ctaText: 'Hubungi Kami',
+    ctaLink: '#contact',
   },
 ];
 
@@ -90,24 +95,32 @@ export function CompanySlideshowPlugin() {
 
   return (
     <section className="relative overflow-hidden">
-      {/* Slideshow Container */}
+      {/* Slideshow Container with Background Image */}
       <div
-        className={`bg-gradient-to-br ${currentSlideData.background} py-20 text-white transition-all duration-500`}
+        className="relative bg-cover bg-center py-20 text-white transition-all duration-500"
+        style={{
+          backgroundImage: currentSlideData.backgroundImage 
+            ? `url(${currentSlideData.backgroundImage})` 
+            : 'none',
+        }}
       >
-        <div className="container mx-auto px-4">
+        {/* Overlay */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${currentSlideData.background} opacity-80`} />
+        
+        <div className="container relative z-10 mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
             {/* Slide Content with Animation */}
             <div
               key={currentSlide}
               className="animate-fadeIn"
             >
-              <h1 className="mb-4 text-5xl font-bold">
+              <h1 className="mb-4 text-5xl font-bold drop-shadow-lg">
                 {currentSlideData.title}
               </h1>
-              <p className="mb-6 text-2xl font-light opacity-90">
+              <p className="mb-6 text-2xl font-light opacity-90 drop-shadow">
                 {currentSlideData.subtitle}
               </p>
-              <p className="mb-8 text-lg opacity-80">
+              <p className="mb-8 text-lg opacity-80 drop-shadow">
                 {currentSlideData.description}
               </p>
 

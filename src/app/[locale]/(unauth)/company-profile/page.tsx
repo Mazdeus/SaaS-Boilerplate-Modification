@@ -1,8 +1,8 @@
 'use client';
 
 /**
- * Company Profile Page
- * Demonstrates templating concepts with company profile domain
+ * BRODO Company Profile Page
+ * Real company profile for BRODO - Indonesian Footwear Brand
  * Praktikum Minggu ke-9 - Template Engine Implementation
  *
  * Templating Concepts Demonstrated:
@@ -14,16 +14,26 @@
 
 import React, { useEffect } from 'react';
 
-import { CompanyAbout } from '@/components/company/CompanyAbout';
-import { CompanyServices } from '@/components/company/CompanyServices';
+import { BrodoAbout } from '@/components/company/BrodoAbout';
+import { BrodoProducts } from '@/components/company/BrodoProducts';
+import { BrodoValues } from '@/components/company/BrodoValues';
 import { useArea } from '@/contexts/AreaContext';
 import { AREAS } from '@/core/types';
-import { usePagePlugins } from '@/hooks/usePagePlugins';
 import { useRouteCleanup } from '@/hooks/useRouteCleanup';
+import BrandPhilosophyWidget from '@/plugins/brand-philosophy/BrandPhilosophyWidget';
+import { BrodoNewsWidget } from '@/plugins/brodo-news/BrodoNewsWidget';
+import { BrodoRewardsWidget } from '@/plugins/brodo-rewards/BrodoRewardsWidget';
 import { CompanyInfoWidget } from '@/plugins/company-info/CompanyInfoWidget';
 import { CompanySlideshowPlugin } from '@/plugins/company-slideshow/CompanySlideshowPlugin';
+import { CompanyStatsWidget } from '@/plugins/company-stats/CompanyStatsWidget';
 import { CompanyTeamWidget } from '@/plugins/company-team/CompanyTeamWidget';
 import { CompanyValuesWidget } from '@/plugins/company-values/CompanyValuesWidget';
+import { FeaturedProductWidget } from '@/plugins/featured-product/FeaturedProductWidget';
+import ProductionInsightWidget from '@/plugins/production-insight/ProductionInsightWidget';
+import { SocialMediaWidget } from '@/plugins/social-media/SocialMediaWidget';
+import { StoreLocatorWidget } from '@/plugins/store-locator/StoreLocatorWidget';
+import { SustainabilityWidget } from '@/plugins/sustainability/SustainabilityWidget';
+import { TestimonialsWidget } from '@/plugins/testimonials/TestimonialsWidget';
 import { MainLayout } from '@/themes/default/layouts/MainLayout';
 
 // Define plugin mapping for this page
@@ -33,20 +43,72 @@ const companyPagePlugins = {
     area: AREAS.HERO,
     priority: 10,
   },
+  // LEFT SIDEBAR WIDGETS
   'company-info-widget': {
     component: CompanyInfoWidget,
     area: AREAS.SIDEBAR_LEFT,
-    priority: 5,
+    priority: 10,
   },
   'company-values-widget': {
     component: CompanyValuesWidget,
     area: AREAS.SIDEBAR_LEFT,
-    priority: 15,
+    priority: 20,
+  },
+  'brand-philosophy-widget': {
+    component: BrandPhilosophyWidget,
+    area: AREAS.SIDEBAR_LEFT,
+    priority: 30,
+  },
+  'production-insight-widget': {
+    component: ProductionInsightWidget,
+    area: AREAS.SIDEBAR_LEFT,
+    priority: 35,
+  },
+  'sustainability-widget': {
+    component: SustainabilityWidget,
+    area: AREAS.SIDEBAR_LEFT,
+    priority: 40,
+  },
+  'company-stats-widget': {
+    component: CompanyStatsWidget,
+    area: AREAS.SIDEBAR_LEFT,
+    priority: 50,
+  },
+  // RIGHT SIDEBAR WIDGETS
+  'featured-product-widget': {
+    component: FeaturedProductWidget,
+    area: AREAS.SIDEBAR_RIGHT,
+    priority: 10,
+  },
+  'brodo-news-widget': {
+    component: BrodoNewsWidget,
+    area: AREAS.SIDEBAR_RIGHT,
+    priority: 20,
+  },
+  'brodo-rewards-widget': {
+    component: BrodoRewardsWidget,
+    area: AREAS.SIDEBAR_RIGHT,
+    priority: 30,
+  },
+  'social-media-widget': {
+    component: SocialMediaWidget,
+    area: AREAS.SIDEBAR_RIGHT,
+    priority: 40,
+  },
+  'testimonials-widget': {
+    component: TestimonialsWidget,
+    area: AREAS.SIDEBAR_RIGHT,
+    priority: 50,
+  },
+  'store-locator-widget': {
+    component: StoreLocatorWidget,
+    area: AREAS.SIDEBAR_RIGHT,
+    priority: 60,
   },
   'company-team-widget': {
     component: CompanyTeamWidget,
     area: AREAS.SIDEBAR_RIGHT,
-    priority: 5,
+    priority: 70,
   },
 };
 
@@ -56,41 +118,48 @@ export default function CompanyProfilePage() {
   // Clean up areas when route changes to prevent duplicates
   useRouteCleanup({ areas: [AREAS.HERO, AREAS.SIDEBAR_LEFT, AREAS.SIDEBAR_RIGHT] });
 
-  // Use page-based plugin system
-  usePagePlugins(companyPagePlugins);
-
-  // Fallback manual registration (can be removed once page plugin system is stable)
+  // Register all plugins manually to ensure they all load
   useEffect(() => {
-    // This will be handled by usePagePlugins, but keeping as fallback
-    const timer = setTimeout(() => {
-      // The usePagePlugins hook should handle registration automatically
-      // based on PagePluginConfig
-    }, 100);
+    // Register all plugins from companyPagePlugins
+    Object.entries(companyPagePlugins).forEach(([pluginId, config]) => {
+      registerComponent(config.area, {
+        id: pluginId,
+        component: config.component,
+        priority: config.priority,
+        enabled: true,
+        areaId: config.area,
+      });
+    });
 
-    return () => clearTimeout(timer);
+    // Cleanup function
+    return () => {
+      // Areas will be cleaned up by useRouteCleanup
+    };
   }, [registerComponent]);
 
   return (
     <MainLayout>
-      {/* Hero Area now uses SLIDESHOW via Area System! */}
-      {/* CompanyHero static component replaced with dynamic area rendering */}
+      {/* Hero Area uses SLIDESHOW via Area System */}
       {/* The slideshow is registered to AREAS.HERO above */}
 
-      {/* About Section - Reusable Partial */}
-      <CompanyAbout />
+      {/* About Section - BRODO Company Info */}
+      <BrodoAbout />
 
-      {/* Services Section - Reusable Partial */}
-      <CompanyServices />
+      {/* Products Section - BRODO Product Categories */}
+      <BrodoProducts />
+
+      {/* Values Section - BRODO Philosophy */}
+      <BrodoValues />
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-16">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
             <h2 className="mb-4 text-4xl font-bold text-gray-900">
-              What Our Clients Say
+              Apa Kata Mereka
             </h2>
             <p className="text-xl text-gray-600">
-              Real feedback from real businesses
+              Testimoni dari pengguna setia BRODO
             </p>
           </div>
 
@@ -98,23 +167,23 @@ export default function CompanyProfilePage() {
             {[
               {
                 id: 1,
-                name: 'Sarah Johnson',
-                company: 'Tech Startup Inc.',
-                testimonial: 'Working with SaaS Template has been a game-changer for our business. Their expertise and dedication are unmatched.',
+                name: 'Budi Santoso',
+                company: 'Entrepreneur',
+                testimonial: 'BRODO adalah pilihan terbaik untuk sepatu sehari-hari. Nyaman, stylish, dan yang penting buatan Indonesia!',
                 rating: 5,
               },
               {
                 id: 2,
-                name: 'Michael Chen',
-                company: 'E-Commerce Solutions',
-                testimonial: 'The team delivered beyond our expectations. Professional, responsive, and highly skilled.',
+                name: 'Ahmad Rahman',
+                company: 'Creative Director',
+                testimonial: 'Kualitas setara brand internasional dengan harga yang lebih terjangkau. Bangga pakai produk lokal!',
                 rating: 5,
               },
               {
                 id: 3,
-                name: 'Emily Davis',
-                company: 'Digital Agency',
-                testimonial: 'Outstanding service and quality. They truly understand modern web development.',
+                name: 'Dimas Prasetyo',
+                company: 'Software Engineer',
+                testimonial: 'Sudah 3 tahun pakai BRODO dan tidak pernah kecewa. Desainnya selalu update dan kualitasnya konsisten.',
                 rating: 5,
               },
             ].map(testimonial => (
@@ -145,23 +214,36 @@ export default function CompanyProfilePage() {
       {/* Contact CTA Section */}
       <section id="contact" className="bg-blue-600 py-16 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="mb-4 text-4xl font-bold">Ready to Get Started?</h2>
+          <h2 className="mb-4 text-4xl font-bold">Siap Memulai Langkah Baru?</h2>
           <p className="mb-8 text-xl text-blue-100">
-            Let's discuss how we can help your business grow
+            Hubungi kami untuk informasi produk, kolaborasi, atau pertanyaan lainnya
           </p>
-          <div className="flex justify-center gap-4">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <a
-              href="mailto:info@saastemplate.com"
+              href="mailto:hello@bro.do"
               className="rounded-lg bg-white px-8 py-3 font-semibold text-blue-600 transition-colors hover:bg-blue-50"
             >
-              Email Us
+              Email Kami
             </a>
             <a
-              href="tel:+6281234567890"
+              href="tel:+622288115555"
               className="rounded-lg border-2 border-white px-8 py-3 font-semibold transition-colors hover:bg-white hover:text-blue-600"
             >
-              Call Now
+              Hubungi Sekarang
             </a>
+            <a
+              href="https://bro.do"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border-2 border-white px-8 py-3 font-semibold transition-colors hover:bg-white hover:text-blue-600"
+            >
+              Kunjungi Toko
+            </a>
+          </div>
+          <div className="mt-8">
+            <p className="text-sm text-blue-100">
+              Alamat: Jl. Gudang Utara No. 40B, Bandung, Indonesia
+            </p>
           </div>
         </div>
       </section>
@@ -171,24 +253,24 @@ export default function CompanyProfilePage() {
         <div className="container mx-auto px-4">
           <div className="rounded-lg border border-blue-200 bg-blue-50 p-6">
             <h3 className="mb-3 text-lg font-bold text-blue-900">
-              🎓 Templating Concepts Demonstrated
+              🎓 Templating Concepts - BRODO Company Profile
             </h3>
             <div className="grid gap-3 text-sm md:grid-cols-2 lg:grid-cols-4">
               <div className="rounded-lg bg-white p-3">
                 <p className="mb-1 font-semibold text-gray-900">Layout & Partial</p>
-                <p className="text-gray-600">Uses MainLayout with reusable sections (Hero, About, Services)</p>
+                <p className="text-gray-600">Header, Footer reusable dengan navigasi anchor scroll</p>
               </div>
               <div className="rounded-lg bg-white p-3">
                 <p className="mb-1 font-semibold text-gray-900">Area/Region System</p>
-                <p className="text-gray-600">Company widgets registered to left & right sidebars</p>
+                <p className="text-gray-600">Slideshow di Hero, Widgets di Sidebars (Info, Values, Team)</p>
               </div>
               <div className="rounded-lg bg-white p-3">
                 <p className="mb-1 font-semibold text-gray-900">Plugin System</p>
-                <p className="text-gray-600">CompanyInfo, Team, Values widgets as plugins</p>
+                <p className="text-gray-600">4 plugins: Slideshow, CompanyInfo, Values, Team</p>
               </div>
               <div className="rounded-lg bg-white p-3">
-                <p className="mb-1 font-semibold text-gray-900">Theme System</p>
-                <p className="text-gray-600">Uses current theme styling (try theme switcher!)</p>
+                <p className="mb-1 font-semibold text-gray-900">Real Content</p>
+                <p className="text-gray-600">BRODO - Brand Sepatu Lokal Bandung sejak 2010</p>
               </div>
             </div>
           </div>

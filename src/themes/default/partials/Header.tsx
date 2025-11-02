@@ -40,41 +40,41 @@ export function Header({
             />
           )}
 
-          <Link href="/" className="text-xl font-bold text-blue-600">
-            SaaS Template
+          <Link href="/company-profile" className="text-xl font-bold text-blue-600">
+            BRODO
           </Link>
 
           <nav className="hidden items-center gap-6 lg:flex">
-            <Link
-              href="/"
+            <a
+              href="#about"
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
             >
-              Home
-            </Link>
-            <Link
-              href="/company-profile"
+              Tentang Kami
+            </a>
+            <a
+              href="#products"
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
             >
-              Company Profile
-            </Link>
-            <Link
-              href="/demo-home"
+              Produk Kami
+            </a>
+            <a
+              href="#values"
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
             >
-              Demo
-            </Link>
-            {/* <Link
-              href="/dashboard"
+              Nilai & Filosofi
+            </a>
+            <a
+              href="#team"
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
             >
-              Dashboard
-            </Link> */}
-            <Link
-              href="/demo/theme-switcher"
+              Tim & Cerita
+            </a>
+            <a
+              href="#contact"
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
             >
-              Themes
-            </Link>
+              Kontak
+            </a>
           </nav>
         </div>
 
@@ -82,19 +82,14 @@ export function Header({
         <div className="flex items-center gap-2">
           <ThemeSwitcher />
 
-          {/* <Link
-            href="/sign-in"
-            className="hidden text-sm font-medium text-gray-700 hover:text-blue-600 sm:inline-block"
-          >
-            Sign In
-          </Link>
-
-          <Link
-            href="/sign-up"
+          <a
+            href="https://bro.do"
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 sm:inline-block"
           >
-            Get Started
-          </Link> */}
+            Belanja Sekarang
+          </a>
 
           {/* Right Sidebar Toggle Button */}
           {onToggleRightSidebar && (
