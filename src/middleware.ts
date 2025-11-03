@@ -23,10 +23,20 @@ const isProtectedRoute = createRouteMatcher([
   '/:locale/api(.*)',
 ]);
 
+// Public API routes that don't require authentication
+const isPublicApiRoute = createRouteMatcher([
+  '/api/contact',
+]);
+
 export default function middleware(
   request: NextRequest,
   event: NextFetchEvent,
 ) {
+  // Allow public API routes without authentication
+  if (isPublicApiRoute(request)) {
+    return NextResponse.next();
+  }
+
   if (
     request.nextUrl.pathname.includes('/sign-in')
     || request.nextUrl.pathname.includes('/sign-up')
