@@ -17,6 +17,7 @@ import React, { useEffect } from 'react';
 import { BrodoAbout } from '@/components/company/BrodoAbout';
 import { BrodoProducts } from '@/components/company/BrodoProducts';
 import { BrodoValues } from '@/components/company/BrodoValues';
+import { ContactForm } from '@/components/company/ContactForm';
 import { useArea } from '@/contexts/AreaContext';
 import { AREAS } from '@/core/types';
 import { useRouteCleanup } from '@/hooks/useRouteCleanup';
@@ -211,12 +212,27 @@ export default function CompanyProfilePage() {
         </div>
       </section>
 
+      {/* Contact Form Section - NEW BACKEND FEATURE! */}
+      <section id="contact" className="bg-gray-50 py-16">
+        <div className="container mx-auto px-4">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-4xl font-bold text-gray-900">
+              Hubungi Kami
+            </h2>
+            <p className="text-xl text-gray-600">
+              Punya pertanyaan? Kami siap membantu Anda!
+            </p>
+          </div>
+          <ContactForm />
+        </div>
+      </section>
+
       {/* Contact CTA Section */}
-      <section id="contact" className="bg-blue-600 py-16 text-white">
+      <section className="bg-blue-600 py-16 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="mb-4 text-4xl font-bold">Siap Memulai Langkah Baru?</h2>
           <p className="mb-8 text-xl text-blue-100">
-            Hubungi kami untuk informasi produk, kolaborasi, atau pertanyaan lainnya
+            Atau hubungi kami langsung untuk respons lebih cepat
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <a

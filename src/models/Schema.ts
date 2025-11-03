@@ -57,3 +57,17 @@ export const todoSchema = pgTable('todo', {
     .notNull(),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
 });
+
+// Contact Form Submissions Schema
+// For company profile contact form - stores customer inquiries
+export const contactSubmissionSchema = pgTable('contact_submission', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').notNull(),
+  phone: text('phone'),
+  subject: text('subject').notNull(),
+  message: text('message').notNull(),
+  status: text('status').notNull().default('new'), // new, in-progress, resolved
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  resolvedAt: timestamp('resolved_at', { mode: 'date' }),
+});
