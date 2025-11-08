@@ -83,7 +83,7 @@ export function ProductionInsightWidget() {
 
         {/* CTA */}
         <a
-          href="https://www.youtube.com/@BrodoFootwear"
+          href="https://youtu.be/uWLl_kWjj34?si=06OWEfQBO8opvs5d"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"

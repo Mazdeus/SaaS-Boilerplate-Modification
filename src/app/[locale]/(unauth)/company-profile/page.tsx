@@ -12,29 +12,25 @@
  * 4. Plugin System - Uses company-specific widgets
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { BrodoAbout } from '@/components/company/BrodoAbout';
 import { BrodoProducts } from '@/components/company/BrodoProducts';
 import { BrodoValues } from '@/components/company/BrodoValues';
 import { ContactForm } from '@/components/company/ContactForm';
+import { TestimonialsSection } from '@/components/company/TestimonialsSection';
 import { useArea } from '@/contexts/AreaContext';
 import { AREAS } from '@/core/types';
 import { useRouteCleanup } from '@/hooks/useRouteCleanup';
-import BrandPhilosophyWidget from '@/plugins/brand-philosophy/BrandPhilosophyWidget';
 import { BrodoNewsWidget } from '@/plugins/brodo-news/BrodoNewsWidget';
-import { BrodoRewardsWidget } from '@/plugins/brodo-rewards/BrodoRewardsWidget';
 import { CompanyInfoWidget } from '@/plugins/company-info/CompanyInfoWidget';
 import { CompanySlideshowPlugin } from '@/plugins/company-slideshow/CompanySlideshowPlugin';
-import { CompanyStatsWidget } from '@/plugins/company-stats/CompanyStatsWidget';
 import { CompanyTeamWidget } from '@/plugins/company-team/CompanyTeamWidget';
 import { CompanyValuesWidget } from '@/plugins/company-values/CompanyValuesWidget';
 import { FeaturedProductWidget } from '@/plugins/featured-product/FeaturedProductWidget';
 import ProductionInsightWidget from '@/plugins/production-insight/ProductionInsightWidget';
-import { SocialMediaWidget } from '@/plugins/social-media/SocialMediaWidget';
 import { StoreLocatorWidget } from '@/plugins/store-locator/StoreLocatorWidget';
 import { SustainabilityWidget } from '@/plugins/sustainability/SustainabilityWidget';
-import { TestimonialsWidget } from '@/plugins/testimonials/TestimonialsWidget';
 import { MainLayout } from '@/themes/default/layouts/MainLayout';
 
 // Define plugin mapping for this page
@@ -55,11 +51,6 @@ const companyPagePlugins = {
     area: AREAS.SIDEBAR_LEFT,
     priority: 20,
   },
-  'brand-philosophy-widget': {
-    component: BrandPhilosophyWidget,
-    area: AREAS.SIDEBAR_LEFT,
-    priority: 30,
-  },
   'production-insight-widget': {
     component: ProductionInsightWidget,
     area: AREAS.SIDEBAR_LEFT,
@@ -69,11 +60,6 @@ const companyPagePlugins = {
     component: SustainabilityWidget,
     area: AREAS.SIDEBAR_LEFT,
     priority: 40,
-  },
-  'company-stats-widget': {
-    component: CompanyStatsWidget,
-    area: AREAS.SIDEBAR_LEFT,
-    priority: 50,
   },
   // RIGHT SIDEBAR WIDGETS
   'featured-product-widget': {
@@ -85,21 +71,6 @@ const companyPagePlugins = {
     component: BrodoNewsWidget,
     area: AREAS.SIDEBAR_RIGHT,
     priority: 20,
-  },
-  'brodo-rewards-widget': {
-    component: BrodoRewardsWidget,
-    area: AREAS.SIDEBAR_RIGHT,
-    priority: 30,
-  },
-  'social-media-widget': {
-    component: SocialMediaWidget,
-    area: AREAS.SIDEBAR_RIGHT,
-    priority: 40,
-  },
-  'testimonials-widget': {
-    component: TestimonialsWidget,
-    area: AREAS.SIDEBAR_RIGHT,
-    priority: 50,
   },
   'store-locator-widget': {
     component: StoreLocatorWidget,
@@ -113,30 +84,85 @@ const companyPagePlugins = {
   },
 };
 
+// Sidebar Settings Type
+type SidebarSettings = {
+  companyInfo: boolean;
+  featuredProducts: boolean;
+  valuesPhilosophy: boolean;
+  storeLocator: boolean;
+  teamLeadership: boolean;
+};
+
 export default function CompanyProfilePage() {
   const { registerComponent } = useArea();
+  const [sidebarSettings, setSidebarSettings] = useState<SidebarSettings>({
+    companyInfo: true,
+    featuredProducts: true,
+    valuesPhilosophy: true,
+    storeLocator: true,
+    teamLeadership: true,
+  });
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
 
   // Clean up areas when route changes to prevent duplicates
   useRouteCleanup({ areas: [AREAS.HERO, AREAS.SIDEBAR_LEFT, AREAS.SIDEBAR_RIGHT] });
 
-  // Register all plugins manually to ensure they all load
+  // Register all plugins manually to ensure they all load, but only if enabled in settings
   useEffect(() => {
+    if (!settingsLoaded) return; // Wait for settings to load
+    
+    // Define which plugins are controlled by which setting
+    const pluginSettingsMap: Record<string, keyof SidebarSettings> = {
+      'company-info-widget': 'companyInfo',
+      'company-values-widget': 'valuesPhilosophy',
+      'featured-product-widget': 'featuredProducts',
+      'store-locator-widget': 'storeLocator',
+      'company-team-widget': 'teamLeadership',
+    };
+
     // Register all plugins from companyPagePlugins
     Object.entries(companyPagePlugins).forEach(([pluginId, config]) => {
-      registerComponent(config.area, {
-        id: pluginId,
-        component: config.component,
-        priority: config.priority,
-        enabled: true,
-        areaId: config.area,
-      });
+      // Check if this plugin is controlled by settings
+      const settingKey = pluginSettingsMap[pluginId];
+      const isEnabled = settingKey ? sidebarSettings[settingKey] : true; // Default enabled for non-sidebar plugins
+      
+      if (isEnabled) {
+        registerComponent(config.area, {
+          id: pluginId,
+          component: config.component,
+          priority: config.priority,
+          enabled: true,
+          areaId: config.area,
+        });
+      }
     });
 
     // Cleanup function
     return () => {
       // Areas will be cleaned up by useRouteCleanup
     };
-  }, [registerComponent]);
+  }, [registerComponent, settingsLoaded, sidebarSettings]);
+
+  // Fetch sidebar settings from API
+  useEffect(() => {
+    const fetchSidebarSettings = async () => {
+      try {
+        const response = await fetch('/api/public/sidebar-settings');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            setSidebarSettings(data.data);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch sidebar settings:', error);
+      } finally {
+        setSettingsLoaded(true);
+      }
+    };
+
+    fetchSidebarSettings();
+  }, []);
 
   return (
     <MainLayout>
@@ -153,64 +179,7 @@ export default function CompanyProfilePage() {
       <BrodoValues />
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 text-4xl font-bold text-gray-900">
-              Apa Kata Mereka
-            </h2>
-            <p className="text-xl text-gray-600">
-              Testimoni dari pengguna setia BRODO
-            </p>
-          </div>
-
-          <div className="grid gap-8 md:grid-cols-3">
-            {[
-              {
-                id: 1,
-                name: 'Budi Santoso',
-                company: 'Entrepreneur',
-                testimonial: 'BRODO adalah pilihan terbaik untuk sepatu sehari-hari. Nyaman, stylish, dan yang penting buatan Indonesia!',
-                rating: 5,
-              },
-              {
-                id: 2,
-                name: 'Ahmad Rahman',
-                company: 'Creative Director',
-                testimonial: 'Kualitas setara brand internasional dengan harga yang lebih terjangkau. Bangga pakai produk lokal!',
-                rating: 5,
-              },
-              {
-                id: 3,
-                name: 'Dimas Prasetyo',
-                company: 'Software Engineer',
-                testimonial: 'Sudah 3 tahun pakai BRODO dan tidak pernah kecewa. Desainnya selalu update dan kualitasnya konsisten.',
-                rating: 5,
-              },
-            ].map(testimonial => (
-              <div
-                key={testimonial.id}
-                className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
-              >
-                <div className="mb-4 flex gap-1">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={`star-${testimonial.id}-${i}`} className="text-yellow-500">★</span>
-                  ))}
-                </div>
-                <p className="mb-4 italic text-gray-700">
-                  "
-                  {testimonial.testimonial}
-                  "
-                </p>
-                <div className="border-t border-gray-100 pt-4">
-                  <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                  <p className="text-sm text-gray-600">{testimonial.company}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TestimonialsSection />
 
       {/* Contact Form Section - NEW BACKEND FEATURE! */}
       <section id="contact" className="bg-gray-50 py-16">

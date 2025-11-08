@@ -198,6 +198,18 @@ npm install
 
 For your information, all dependencies are updated every month.
 
+**🗄️ Database Setup (Required for full functionality):**
+
+If this is your first time setting up, you need to configure the PostgreSQL database:
+
+```shell
+# Quick setup (for experienced users)
+# See QUICK_SETUP.md for 2-minute setup guide
+
+# Full tutorial (for beginners)  
+# See DATABASE_SETUP_TUTORIAL.md for comprehensive guide
+```
+
 Then, you can run the project locally in development mode with live reload by executing:
 
 ```shell

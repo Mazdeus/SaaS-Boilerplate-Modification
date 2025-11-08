@@ -6,9 +6,57 @@
  * Part of Layout & Partial System - Templating Praktikum Week 9
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export function BrodoAbout() {
+  const [aboutData, setAboutData] = useState<any>(null);
+  const [companyInfo, setCompanyInfo] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [aboutRes, infoRes] = await Promise.all([
+          fetch('/api/public/about'),
+          fetch('/api/public/company-info'),
+        ]);
+        
+        const aboutJson = await aboutRes.json();
+        const infoJson = await infoRes.json();
+        
+        if (aboutJson.success && aboutJson.data) {
+          setAboutData(aboutJson.data);
+        }
+        
+        if (infoJson.success && infoJson.data) {
+          setCompanyInfo(infoJson.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch about data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section id="about" className="bg-gray-50 py-20">
+        <div className="container mx-auto px-4">
+          <div className="animate-pulse">
+            <div className="mb-12 text-center">
+              <div className="mb-2 h-4 w-32 bg-gray-200 rounded mx-auto"></div>
+              <div className="mb-4 h-10 w-64 bg-gray-200 rounded mx-auto"></div>
+              <div className="h-6 w-full max-w-3xl bg-gray-200 rounded mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="about" className="bg-gray-50 py-20">
       <div className="container mx-auto px-4">
@@ -16,11 +64,10 @@ export function BrodoAbout() {
         <div className="mb-12 text-center">
           <p className="mb-2 text-sm font-medium text-blue-600">Tentang Kami</p>
           <h2 className="mb-4 text-4xl font-bold text-gray-900">
-            Siapa Kami
+            {aboutData?.title || 'Siapa Kami'}
           </h2>
           <p className="mx-auto max-w-3xl text-lg text-gray-600">
-            BRODO didirikan di Bandung pada tahun 2010 oleh insinyur muda yang melihat peluang: 
-            menyajikan sepatu stylish, berkualitas, dan terjangkau untuk pria di Indonesia.
+            {aboutData?.description || 'BRODO didirikan di Bandung pada tahun 2010 oleh insinyur muda yang melihat peluang: menyajikan sepatu stylish, berkualitas, dan terjangkau untuk pria di Indonesia.'}
           </p>
         </div>
 
@@ -60,9 +107,7 @@ export function BrodoAbout() {
             </div>
             <h3 className="mb-4 text-2xl font-bold text-gray-900">Misi Kami</h3>
             <p className="text-gray-600">
-              Memberdayakan industri alas kaki lokal dan memperkuat kebanggaan terhadap produk Indonesia. 
-              Kami memanfaatkan kerajinan lokal di Cibaduyut dan material premium untuk menghasilkan 
-              sepatu berkualitas internasional.
+              {aboutData?.mission || 'Memberdayakan industri alas kaki lokal dan memperkuat kebanggaan terhadap produk Indonesia. Kami memanfaatkan kerajinan lokal di Cibaduyut dan material premium untuk menghasilkan sepatu berkualitas internasional.'}
             </p>
           </div>
 
@@ -73,9 +118,7 @@ export function BrodoAbout() {
             </div>
             <h3 className="mb-4 text-2xl font-bold text-gray-900">Visi Kami</h3>
             <p className="text-gray-600">
-              Menjadi brand gaya hidup pria terdepan di Asia Tenggara. Kami berkomitmen untuk terus 
-              berinovasi dan menghadirkan produk yang tidak hanya stylish, tetapi juga mencerminkan 
-              identitas dan kebanggaan Indonesia.
+              {aboutData?.vision || 'Menjadi brand gaya hidup pria terdepan di Asia Tenggara. Kami berkomitmen untuk terus berinovasi dan menghadirkan produk yang tidak hanya stylish, tetapi juga mencerminkan identitas dan kebanggaan Indonesia.'}
             </p>
           </div>
         </div>
@@ -87,11 +130,11 @@ export function BrodoAbout() {
           </h3>
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             <div className="text-center">
-              <div className="mb-2 text-4xl font-bold text-blue-600">2010</div>
+              <div className="mb-2 text-4xl font-bold text-blue-600">{companyInfo?.foundedYear || '2010'}</div>
               <div className="text-sm font-medium text-gray-700">Tahun Berdiri</div>
             </div>
             <div className="text-center">
-              <div className="mb-2 text-4xl font-bold text-green-600">50+</div>
+              <div className="mb-2 text-4xl font-bold text-green-600">{companyInfo?.employees || '50+'}+</div>
               <div className="text-sm font-medium text-gray-700">Tim Berpengalaman</div>
             </div>
             <div className="text-center">

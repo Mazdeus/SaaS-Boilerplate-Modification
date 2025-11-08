@@ -2,13 +2,66 @@
 
 /**
  * Company Info Widget Plugin
- * Displays company information in sidebar
+ * Displays company information from database
  * Part of Company Profile - Templating Praktikum Week 9
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+type CompanyInfo = {
+  name: string;
+  tagline: string;
+  description: string;
+  foundedYear: number;
+  location: string;
+  industry: string;
+  email: string;
+  phone: string;
+  address: string;
+  logoUrl?: string;
+};
 
 export function CompanyInfoWidget() {
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/public/company-info')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setCompanyInfo(data.data);
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching company info:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="border-b border-gray-200 bg-white p-6">
+        <h3 className="mb-4 text-lg font-semibold text-gray-900">
+          Info Perusahaan
+        </h3>
+        <div className="animate-pulse space-y-4">
+          <div className="mx-auto size-16 rounded-full bg-gray-200" />
+          <div className="space-y-2">
+            <div className="h-4 rounded bg-gray-200" />
+            <div className="h-4 rounded bg-gray-200" />
+            <div className="h-4 rounded bg-gray-200" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!companyInfo) {
+    return null;
+  }
+
   return (
     <div className="border-b border-gray-200 bg-white p-6">
       <h3 className="mb-4 text-lg font-semibold text-gray-900">
@@ -20,10 +73,10 @@ export function CompanyInfoWidget() {
         <div className="text-center">
           <div 
             className="mx-auto mb-2 size-16 rounded-full bg-cover bg-center"
-            style={{ backgroundImage: 'url(/assets/brodo-logo-square.png)' }}
+            style={{ backgroundImage: `url(${companyInfo.logoUrl || '/assets/brodo-logo-square.png'})` }}
           />
-          <h4 className="font-semibold text-gray-900">BRODO</h4>
-          <p className="text-xs text-gray-500">Fashion & Footwear</p>
+          <h4 className="font-semibold text-gray-900">{companyInfo.name}</h4>
+          <p className="text-xs text-gray-500">{companyInfo.industry}</p>
         </div>
 
         {/* Quick Info */}
@@ -32,15 +85,15 @@ export function CompanyInfoWidget() {
             <span className="text-blue-600">📍</span>
             <div className="flex-1">
               <p className="text-xs font-medium text-gray-700">Lokasi</p>
-              <p className="text-xs text-gray-600">Bandung, Jawa Barat, Indonesia</p>
+              <p className="text-xs text-gray-600">{companyInfo.location}</p>
             </div>
           </div>
 
           <div className="flex items-start gap-2">
-            <span className="text-blue-600">�</span>
+            <span className="text-blue-600">📅</span>
             <div className="flex-1">
               <p className="text-xs font-medium text-gray-700">Tahun Berdiri</p>
-              <p className="text-xs text-gray-600">2010</p>
+              <p className="text-xs text-gray-600">{companyInfo.foundedYear}</p>
             </div>
           </div>
 
@@ -48,15 +101,7 @@ export function CompanyInfoWidget() {
             <span className="text-blue-600">🏭</span>
             <div className="flex-1">
               <p className="text-xs font-medium text-gray-700">Industri</p>
-              <p className="text-xs text-gray-600">Fashion & Footwear</p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-2">
-            <span className="text-blue-600">👥</span>
-            <div className="flex-1">
-              <p className="text-xs font-medium text-gray-700">Pendiri</p>
-              <p className="text-xs text-gray-600">Yukka Harlanda & Putera Dwi Karunia</p>
+              <p className="text-xs text-gray-600">{companyInfo.industry}</p>
             </div>
           </div>
         </div>
@@ -68,10 +113,10 @@ export function CompanyInfoWidget() {
             <div className="flex-1">
               <p className="text-xs font-medium text-gray-700">Email</p>
               <a
-                href="mailto:hello@bro.do"
+                href={`mailto:${companyInfo.email}`}
                 className="text-xs text-blue-600 hover:underline"
               >
-                hello@bro.do
+                {companyInfo.email}
               </a>
             </div>
           </div>
@@ -81,10 +126,10 @@ export function CompanyInfoWidget() {
             <div className="flex-1">
               <p className="text-xs font-medium text-gray-700">Telepon</p>
               <a
-                href="tel:+622288115555"
+                href={`tel:${companyInfo.phone}`}
                 className="text-xs text-blue-600 hover:underline"
               >
-                (022) 8811-5555
+                {companyInfo.phone}
               </a>
             </div>
           </div>

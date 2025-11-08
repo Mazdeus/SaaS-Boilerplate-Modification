@@ -1,6 +1,61 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
+type Product = {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  oldPrice?: string;
+  imageUrl?: string;
+  category: string;
+  rating?: number;
+  slug: string;
+};
+
 export function FeaturedProductWidget() {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/public/products?featured=true')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data.length > 0) {
+          setProduct(data.data[0]); // Get first featured product
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching featured product:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md">
+        <div className="animate-pulse space-y-4 p-6">
+          <div className="h-6 rounded bg-gray-200" />
+          <div className="aspect-square rounded-lg bg-gray-200" />
+          <div className="space-y-2">
+            <div className="h-4 rounded bg-gray-200" />
+            <div className="h-4 rounded bg-gray-200" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return null;
+  }
+
+  const formatPrice = (price: string) => {
+    return `Rp ${parseInt(price, 10).toLocaleString('id-ID')}`;
+  };
+
   return (
     <div className="w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition-shadow duration-300 hover:shadow-lg">
       <div className="space-y-2 p-6 pb-3">
@@ -16,8 +71,8 @@ export function FeaturedProductWidget() {
         {/* Product Image */}
         <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
           <img 
-            src="/assets/ventura.webp" 
-            alt="BRODO Ventura Full Black EL"
+            src={product.imageUrl || '/assets/ventura.webp'}
+            alt={product.name}
             className="size-full object-cover"
           />
         </div>
@@ -25,25 +80,28 @@ export function FeaturedProductWidget() {
         {/* Product Info */}
         <div className="space-y-3">
           <div>
-            <h3 className="mb-1 text-base font-semibold">BRODO - Sepatu Ventura Full Black EL</h3>
+            <h3 className="mb-1 text-base font-semibold">{product.name}</h3>
             <p className="text-xs leading-relaxed text-gray-600">
-              Sepatu formal premium dengan desain minimalis dan kenyamanan maksimal. 
-              Cocok untuk berbagai acara formal.
+              {product.description}
             </p>
           </div>
 
           {/* Rating */}
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className="text-amber-400">⭐</span>
-            ))}
-            <span className="ml-1 text-xs text-gray-500">(4.9 / 5.0)</span>
-          </div>
+          {product.rating && (
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className={i < product.rating! ? 'text-amber-400' : 'text-gray-300'}>⭐</span>
+              ))}
+              <span className="ml-1 text-xs text-gray-500">({product.rating.toFixed(1)} / 5.0)</span>
+            </div>
+          )}
 
           {/* Price */}
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold">Rp 685.000</span>
-            <span className="text-sm text-gray-500 line-through">Rp 891.000</span>
+            <span className="text-2xl font-bold">{formatPrice(product.price)}</span>
+            {product.oldPrice && (
+              <span className="text-sm text-gray-500 line-through">{formatPrice(product.oldPrice)}</span>
+            )}
           </div>
 
           {/* Features */}

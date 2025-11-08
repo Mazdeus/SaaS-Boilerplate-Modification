@@ -6,7 +6,7 @@
  * Part of Layout & Partial System - Templating Praktikum Week 9
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 type Value = {
   id: number;
@@ -16,38 +16,56 @@ type Value = {
   quote: string;
 };
 
-const values: Value[] = [
-  {
-    id: 1,
-    icon: '✨',
-    title: 'Keaslian (Authenticity)',
-    description: 'Setiap produk dibuat dengan karakter dan kejujuran. Kami bangga dengan identitas lokal dan tidak berusaha meniru brand lain.',
-    quote: 'Menjadi diri sendiri adalah kekuatan terbesar',
-  },
-  {
-    id: 2,
-    icon: '⭐',
-    title: 'Kualitas (Quality)',
-    description: 'Material premium, pengerjaan detail, produksi lokal. Kami tidak kompromi dalam hal kualitas untuk kepuasan pelanggan.',
-    quote: 'Kualitas bukan kebetulan, tapi hasil dedikasi',
-  },
-  {
-    id: 3,
-    icon: '🤝',
-    title: 'Kemandirian & Kerajinan Lokal',
-    description: 'Mengandalkan pengrajin lokal Bandung/Cibaduyut. Kami percaya pada kekuatan kolaborasi dan memberdayakan industri lokal.',
-    quote: 'Bersama kita kuat, lokal kita banggakan',
-  },
-  {
-    id: 4,
-    icon: '🚀',
-    title: 'Inovasi (Innovation)',
-    description: 'Terus berkembang mengikuti tren dan teknologi untuk pria aktif. Kami tidak pernah berhenti berinovasi dalam desain dan kenyamanan.',
-    quote: 'Inovasi adalah jalan menuju masa depan',
-  },
-];
-
 export function BrodoValues() {
+  const [values, setValues] = useState<Value[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchValues = async () => {
+      try {
+        const res = await fetch('/api/public/services');
+        const data = await res.json();
+        
+        if (data.success && data.data.length > 0) {
+          const transformedValues = data.data.map((item: any) => ({
+            id: item.id,
+            icon: item.icon || '⭐',
+            title: item.title,
+            description: item.description || '',
+            quote: item.subtitle || 'Our core value',
+          }));
+          setValues(transformedValues);
+        }
+      } catch (error) {
+        console.error('Failed to fetch values:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchValues();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section id="values" className="bg-gradient-to-br from-gray-50 to-blue-50 py-20">
+        <div className="container mx-auto px-4">
+          <div className="animate-pulse">
+            <div className="mb-12 text-center">
+              <div className="mb-2 h-4 w-32 bg-gray-200 rounded mx-auto"></div>
+              <div className="mb-4 h-10 w-64 bg-gray-200 rounded mx-auto"></div>
+              <div className="h-6 w-full max-w-3xl bg-gray-200 rounded mx-auto"></div>
+            </div>
+            <div className="grid gap-8 md:grid-cols-2">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="h-64 bg-gray-200 rounded-lg"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
   return (
     <section id="values" className="bg-gradient-to-br from-gray-50 to-blue-50 py-20">
       <div className="container mx-auto px-4">

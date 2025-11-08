@@ -20,60 +20,54 @@ type Slide = {
   ctaLink: string;
 };
 
-const slides: Slide[] = [
-  {
-    id: 1,
-    title: 'BRODO',
-    subtitle: 'Langkah Awal Gaya Lokal',
-    description: 'Brand sepatu lokal Indonesia yang berkomitmen menghadirkan produk berkualitas tinggi, nyaman, dan penuh karakter, hasil karya anak bangsa dari Bandung.',
-    background: 'from-blue-600 to-blue-800',
-    backgroundImage: '/assets/img-stock-1.webp',
-    ctaText: 'Lihat Produk',
-    ctaLink: '#products',
-  },
-  {
-    id: 2,
-    title: 'Innovation & Excellence',
-    subtitle: 'Dari Bandung untuk Indonesia',
-    description: 'Sejak 2010, kami memanfaatkan kerajinan lokal Cibaduyut dan material premium untuk menciptakan alas kaki stylish yang terjangkau untuk pria Indonesia.',
-    background: 'from-purple-600 to-purple-800',
-    backgroundImage: '/assets/img-stock-7.webp',
-    ctaText: 'Tentang Kami',
-    ctaLink: '#about',
-  },
-  {
-    id: 3,
-    title: 'Quality Craftsmanship',
-    subtitle: 'Produk Berkualitas Internasional',
-    description: 'Setiap produk BRODO dirancang dengan detail, menggunakan bahan pilihan dan dikerjakan oleh pengrajin berpengalaman untuk hasil terbaik.',
-    background: 'from-green-600 to-green-800',
-    backgroundImage: '/assets/img-stock-10.webp',
-    ctaLink: '#values',
-    ctaText: 'Nilai Kami',
-  },
-  {
-    id: 4,
-    title: 'Join the Movement',
-    subtitle: 'Live Epic with Your Shoes',
-    description: 'Bergabunglah dengan ribuan pria Indonesia yang telah mempercayai BRODO sebagai pilihan alas kaki mereka. Wujudkan gaya hidup yang epic!',
-    background: 'from-orange-600 to-orange-800',
-    backgroundImage: '/assets/img-stock-13.webp',
-    ctaText: 'Hubungi Kami',
-    ctaLink: '#contact',
-  },
-];
-
 export function CompanySlideshowPlugin() {
+  const [slides, setSlides] = useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch hero slides from API
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        const res = await fetch('/api/public/hero');
+        const data = await res.json();
+        
+        if (data.success && data.data.length > 0) {
+          // Transform API data to Slide format
+          const transformedSlides = data.data.map((item: any) => ({
+            id: item.id,
+            title: item.title,
+            subtitle: item.subtitle || '',
+            description: item.description || '',
+            background: item.gradientFrom && item.gradientTo 
+              ? `from-${item.gradientFrom} to-${item.gradientTo}`
+              : 'from-blue-600 to-blue-800',
+            backgroundImage: item.imageUrl || undefined,
+            ctaText: item.ctaText || 'Learn More',
+            ctaLink: item.ctaLink || '#',
+          }));
+          setSlides(transformedSlides);
+        }
+      } catch (error) {
+        console.error('Failed to fetch hero slides:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSlides();
+  }, []);
 
   // Auto-play slideshow
   useEffect(() => {
+    if (slides.length === 0) return;
+    
     const timer = setInterval(() => {
       setCurrentSlide(prev => (prev + 1) % slides.length);
     }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
@@ -86,6 +80,41 @@ export function CompanySlideshowPlugin() {
   const prevSlide = () => {
     setCurrentSlide(prev => (prev - 1 + slides.length) % slides.length);
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <section className="relative overflow-hidden">
+        <div className="relative bg-gradient-to-br from-blue-600 to-blue-800 py-20 text-white">
+          <div className="container relative z-10 mx-auto px-4">
+            <div className="mx-auto max-w-3xl text-center">
+              <div className="animate-pulse">
+                <div className="mb-4 h-12 bg-white/20 rounded"></div>
+                <div className="mb-6 h-8 bg-white/20 rounded"></div>
+                <div className="mb-8 h-6 bg-white/20 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Show empty state if no slides
+  if (slides.length === 0) {
+    return (
+      <section className="relative overflow-hidden">
+        <div className="relative bg-gradient-to-br from-gray-600 to-gray-800 py-20 text-white">
+          <div className="container relative z-10 mx-auto px-4">
+            <div className="mx-auto max-w-3xl text-center">
+              <h1 className="mb-4 text-5xl font-bold">No Content Available</h1>
+              <p className="text-lg opacity-80">Please add hero content from the CMS dashboard.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const currentSlideData = slides[currentSlide];
 

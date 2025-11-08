@@ -1,32 +1,52 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
+type CompanyBranch = {
+  id: number;
+  name: string;
+  address: string;
+  city: string;
+  province: string;
+  phone: string;
+  operatingHours: string;
+  mapUrl: string;
+  instagramUsername: string;
+};
+
 export function StoreLocatorWidget() {
-  const stores = [
-    {
-      id: 1,
-      name: 'BRODO Kemang',
-      address: 'Jl. Kemang Raya No. 8, Jakarta Selatan',
-      phone: '+62 21 7199 4567',
-      hours: 'Sen-Min: 10.00 - 22.00',
-      maps: 'https://goo.gl/maps/example1',
-    },
-    {
-      id: 2,
-      name: 'BRODO Senopati',
-      address: 'Jl. Senopati No. 25, Jakarta Selatan',
-      phone: '+62 21 7278 8901',
-      hours: 'Sen-Min: 10.00 - 22.00',
-      maps: 'https://goo.gl/maps/example2',
-    },
-    {
-      id: 3,
-      name: 'BRODO PIK',
-      address: 'PIK Avenue Mall, Jakarta Utara',
-      phone: '+62 21 5020 3456',
-      hours: 'Sen-Min: 10.00 - 22.00',
-      maps: 'https://goo.gl/maps/example3',
-    },
-  ];
+  const [stores, setStores] = useState<CompanyBranch[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/public/company-branches')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setStores(data.data.slice(0, 3)); // Show only first 3
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching store locations:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+        <div className="animate-pulse space-y-4">
+          <div className="h-6 rounded bg-gray-200" />
+          <div className="space-y-3">
+            <div className="h-20 rounded-lg bg-gray-200" />
+            <div className="h-20 rounded-lg bg-gray-200" />
+            <div className="h-20 rounded-lg bg-gray-200" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full rounded-lg border border-gray-200 bg-white p-6 shadow-md transition-shadow duration-300 hover:shadow-lg">
@@ -58,36 +78,54 @@ export function StoreLocatorWidget() {
                 📍 {store.address}
               </p>
               
-              <div className="flex items-center gap-1 text-xs text-gray-600">
-                <span>📞</span>
-                <a 
-                  href={`tel:${store.phone}`}
-                  className="transition-colors hover:text-red-600"
-                >
-                  {store.phone}
-                </a>
-              </div>
+              {store.phone && (
+                <div className="flex items-center gap-1 text-xs text-gray-600">
+                  <span>📞</span>
+                  <a 
+                    href={`tel:${store.phone}`}
+                    className="transition-colors hover:text-red-600"
+                  >
+                    {store.phone}
+                  </a>
+                </div>
+              )}
               
               <div className="flex items-center gap-1 text-xs text-gray-600">
                 <span>🕐</span>
-                {store.hours}
+                {store.operatingHours || 'Jam operasional bervariasi'}
               </div>
+
+              {store.instagramUsername && (
+                <div className="flex items-center gap-1 text-xs text-gray-600">
+                  <span>📸</span>
+                  <a 
+                    href={`https://instagram.com/${store.instagramUsername}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-red-600"
+                  >
+                    @{store.instagramUsername}
+                  </a>
+                </div>
+              )}
             </div>
 
-            <a
-              href={store.maps}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex w-full items-center justify-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50"
-            >
-              <span>🧭</span>
-              Petunjuk Arah
-            </a>
+            {store.mapUrl && (
+              <a
+                href={store.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50"
+              >
+                <span>🧭</span>
+                Petunjuk Arah
+              </a>
+            )}
           </div>
         ))}
 
         <a
-          href="https://bro.do/pages/stores"
+          href="https://bro.do/pages/our-store"
           target="_blank"
           rel="noopener noreferrer"
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700"

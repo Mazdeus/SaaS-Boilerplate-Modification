@@ -2,38 +2,54 @@
 
 /**
  * Company Team Widget Plugin
- * Displays team members
+ * Displays team members from database
  * Part of Company Profile - Templating Praktikum Week 9
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 type TeamMember = {
   id: number;
   name: string;
-  role: string;
-  avatar: string;
-  photo?: string;
+  position: string;
+  bio?: string;
+  imageUrl?: string;
+  order: number;
 };
 
-const teamMembers: TeamMember[] = [
-  { 
-    id: 1, 
-    name: 'Muhammad Yukka Harlanda', 
-    role: 'Co-Founder & CEO', 
-    avatar: '👨‍💼',
-    photo: '/assets/Muhammad Yukka.jpg'
-  },
-  { 
-    id: 2, 
-    name: 'Putera Dwi Karunia', 
-    role: 'Co-Founder & Creative Partner', 
-    avatar: '👨‍🎨',
-    photo: '/assets/Putera Dwi.jfif'
-  },
-];
-
 export function CompanyTeamWidget() {
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/public/team')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setTeamMembers(data.data);
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching team members:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="border-b border-gray-200 bg-white p-6">
+        <h3 className="mb-4 text-lg font-semibold text-gray-900">
+          Tim Leadership Kami
+        </h3>
+        <div className="animate-pulse space-y-3">
+          <div className="h-16 rounded-lg bg-gray-200" />
+          <div className="h-16 rounded-lg bg-gray-200" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="border-b border-gray-200 bg-white p-6">
       <h3 className="mb-4 text-lg font-semibold text-gray-900">
@@ -46,19 +62,19 @@ export function CompanyTeamWidget() {
             key={member.id}
             className="flex items-center gap-3 rounded-lg bg-gray-50 p-3 transition-colors hover:bg-gray-100"
           >
-            {member.photo ? (
+            {member.imageUrl ? (
               <div 
                 className="size-12 rounded-full bg-cover bg-center"
-                style={{ backgroundImage: `url(${member.photo})` }}
+                style={{ backgroundImage: `url(${member.imageUrl})` }}
               />
             ) : (
               <div className="flex size-12 items-center justify-center rounded-full bg-blue-100 text-2xl">
-                {member.avatar}
+                👤
               </div>
             )}
             <div className="flex-1">
               <h4 className="font-medium text-gray-900">{member.name}</h4>
-              <p className="text-sm text-gray-600">{member.role}</p>
+              <p className="text-sm text-gray-600">{member.position}</p>
             </div>
           </div>
         ))}

@@ -8,7 +8,7 @@ export function SocialMediaWidget() {
       caption: 'New Ventura Collection - Timeless elegance meets modern comfort',
       likes: 2847,
       comments: 142,
-      link: 'https://instagram.com/brodooriginal',
+      link: 'https://www.instagram.com/bro.do/',
     },
     {
       id: 2,
@@ -16,7 +16,7 @@ export function SocialMediaWidget() {
       caption: 'Behind the scenes: Crafting perfection one stitch at a time',
       likes: 1923,
       comments: 89,
-      link: 'https://instagram.com/brodooriginal',
+      link: 'https://www.instagram.com/bro.do/',
     },
     {
       id: 3,
@@ -24,7 +24,7 @@ export function SocialMediaWidget() {
       caption: 'Weekend vibes with BRODO Casual Series',
       likes: 3214,
       comments: 201,
-      link: 'https://instagram.com/brodooriginal',
+      link: 'https://www.instagram.com/bro.do/',
     },
   ];
 
@@ -35,7 +35,7 @@ export function SocialMediaWidget() {
           <div className="rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 p-2">
             <span className="text-white">📷</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900">@brodooriginal</h3>
+          <h3 className="text-lg font-semibold text-gray-900">@bro.do</h3>
         </div>
         <div className="flex items-center gap-3 text-xs text-gray-500">
           <span>📍 Jakarta, Indonesia</span>

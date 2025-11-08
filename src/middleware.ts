@@ -26,12 +26,45 @@ const isProtectedRoute = createRouteMatcher([
 // Public API routes that don't require authentication
 const isPublicApiRoute = createRouteMatcher([
   '/api/contact',
+  '/api/public(.*)',
+  '/:locale/api/public(.*)',
+]);
+
+// NextAuth API routes - must bypass all middleware
+const isNextAuthRoute = createRouteMatcher([
+  '/api/auth(.*)',
+]);
+
+// CMS routes (use NextAuth instead of Clerk)
+const isCmsRoute = createRouteMatcher([
+  '/cms(.*)',
+  '/:locale/cms(.*)',
+]);
+
+// CMS API routes (let them handle auth internally)
+const isCmsApiRoute = createRouteMatcher([
+  '/api/cms(.*)',
 ]);
 
 export default function middleware(
   request: NextRequest,
   event: NextFetchEvent,
 ) {
+  // Allow NextAuth API routes to bypass ALL middleware
+  if (isNextAuthRoute(request)) {
+    return NextResponse.next();
+  }
+
+  // Allow CMS API routes to bypass middleware (they handle auth internally)
+  if (isCmsApiRoute(request)) {
+    return NextResponse.next();
+  }
+
+  // Allow CMS routes to bypass Clerk middleware - use NextAuth instead
+  if (isCmsRoute(request)) {
+    return intlMiddleware(request);
+  }
+
   // Allow public API routes without authentication
   if (isPublicApiRoute(request)) {
     return NextResponse.next();

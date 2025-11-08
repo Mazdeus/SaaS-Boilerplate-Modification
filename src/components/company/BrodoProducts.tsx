@@ -6,7 +6,7 @@
  * Part of Layout & Partial System - Templating Praktikum Week 9
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 type Product = {
   id: number;
@@ -17,42 +17,67 @@ type Product = {
   link: string;
 };
 
-const products: Product[] = [
-  {
-    id: 1,
-    image: '/assets/sneakers.webp',
-    title: 'Sneakers',
-    description: 'Sola nyaman, desain modern, cocok untuk aktivitas harian & kasual',
-    features: ['Ace Nova Series', 'Ventura Series', 'Alpha Series', 'Comfort Fit'],
-    link: 'https://bro.do/pages/sneakers',
-  },
-  {
-    id: 2,
-    image: '/assets/sandals.webp',
-    title: 'Formal Sandals',
-    description: 'Santai namun stylish, cocok untuk waktu luang dan acara semi-formal',
-    features: ['Casual Style', 'Comfort Sole', 'Breathable', 'Easy Wear'],
-    link: 'https://bro.do/pages/formal-sandals',
-  },
-  {
-    id: 3,
-    image: '/assets/essentials.webp',
-    title: 'Essentials',
-    description: 'Koleksi pakaian essential untuk melengkapi gaya BRODO',
-    features: ['Premium T-Shirts', 'Casual Tops', 'Comfortable Wear', 'Quality Fabric'],
-    link: 'https://bro.do/collections/tops',
-  },
-  {
-    id: 4,
-    image: '/assets/accessories.webp',
-    title: 'Accessories',
-    description: 'Kaus kaki premium, sabuk kulit, dompet - melengkapi gaya BRODO',
-    features: ['Premium Socks', 'Leather Belts', 'Wallets', 'Shoe Care'],
-    link: 'https://bro.do/pages/accessories',
-  },
-];
-
 export function BrodoProducts() {
+  const [collections, setCollections] = useState<Product[]>([]);
+  const [featuredProduct, setFeaturedProduct] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [collectionsRes, featuredRes] = await Promise.all([
+          fetch('/api/public/collections'),
+          fetch('/api/public/products?featured=true'),
+        ]);
+        
+        const collectionsJson = await collectionsRes.json();
+        const featuredJson = await featuredRes.json();
+        
+        if (collectionsJson.success && collectionsJson.data.length > 0) {
+          const transformedCollections = collectionsJson.data.map((item: any) => ({
+            id: item.id,
+            image: item.imageUrl || '/assets/sneakers.webp',
+            title: item.name,
+            description: item.description || '',
+            features: item.tags ? item.tags.split(',').map((t: string) => t.trim()) : [],
+            link: item.url || '#',
+          }));
+          setCollections(transformedCollections);
+        }
+        
+        if (featuredJson.success && featuredJson.data.length > 0) {
+          setFeaturedProduct(featuredJson.data[0]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch products data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section id="products" className="bg-white py-20">
+        <div className="container mx-auto px-4">
+          <div className="animate-pulse">
+            <div className="mb-12 text-center">
+              <div className="mb-2 h-4 w-32 bg-gray-200 rounded mx-auto"></div>
+              <div className="mb-4 h-10 w-64 bg-gray-200 rounded mx-auto"></div>
+              <div className="h-6 w-full max-w-3xl bg-gray-200 rounded mx-auto"></div>
+            </div>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="h-96 bg-gray-200 rounded-lg"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
   return (
     <section id="products" className="bg-white py-20">
       <div className="container mx-auto px-4">
@@ -69,7 +94,7 @@ export function BrodoProducts() {
 
         {/* Products Grid */}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {products.map(product => (
+          {collections.map(product => (
             <div
               key={product.id}
               className="group overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-blue-500 hover:shadow-lg"
@@ -90,26 +115,28 @@ export function BrodoProducts() {
                 <p className="mb-4 text-sm text-gray-600">{product.description}</p>
 
                 {/* Features List */}
-                <ul className="mb-6 space-y-2">
-                  {product.features.map((feature, index) => (
-                    <li key={`${product.id}-feature-${index}`} className="flex items-center text-sm text-gray-700">
-                      <svg
-                        className="mr-2 size-4 text-blue-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                {product.features.length > 0 && (
+                  <ul className="mb-6 space-y-2">
+                    {product.features.map((feature, index) => (
+                      <li key={`${product.id}-feature-${index}`} className="flex items-center text-sm text-gray-700">
+                        <svg
+                          className="mr-2 size-4 text-blue-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
                 {/* CTA Button */}
                 <a
@@ -126,31 +153,32 @@ export function BrodoProducts() {
         </div>
 
         {/* Featured Product Highlight */}
-        <div className="mt-16 overflow-hidden rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-white">
-          <div className="grid items-center gap-8 md:grid-cols-2">
-            <div>
-              <h3 className="mb-4 text-3xl font-bold">Produk Unggulan</h3>
-              <p className="mb-6 text-lg text-blue-100">
-                Ace Nova Desert Beige - Sneakers premium dengan desain minimalis dan kenyamanan maksimal. 
-                Cocok untuk berbagai aktivitas dan gaya kasual.
-              </p>
-              <a
-                href="https://bro.do/collections/footwear"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block rounded-lg bg-white px-8 py-3 font-semibold text-blue-600 transition-colors hover:bg-blue-50"
-              >
-                Lihat Detail
-              </a>
-            </div>
-            <div className="overflow-hidden rounded-lg">
-              <div
-                className="h-64 w-full bg-cover bg-center"
-                style={{ backgroundImage: 'url(/assets/img-stock-5.webp)' }}
-              />
+        {featuredProduct && (
+          <div className="mt-16 overflow-hidden rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-white">
+            <div className="grid items-center gap-8 md:grid-cols-2">
+              <div>
+                <h3 className="mb-4 text-3xl font-bold">Produk Unggulan</h3>
+                <p className="mb-6 text-lg text-blue-100">
+                  {featuredProduct.name} - {featuredProduct.description}
+                </p>
+                <a
+                  href={featuredProduct.url || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block rounded-lg bg-white px-8 py-3 font-semibold text-blue-600 transition-colors hover:bg-blue-50"
+                >
+                  Lihat Detail
+                </a>
+              </div>
+              <div className="overflow-hidden rounded-lg">
+                <div
+                  className="h-64 w-full bg-cover bg-center"
+                  style={{ backgroundImage: `url(${featuredProduct.imageUrl || '/assets/img-stock-5.webp'})` }}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Shop CTA */}
         <div className="mt-12 text-center">
