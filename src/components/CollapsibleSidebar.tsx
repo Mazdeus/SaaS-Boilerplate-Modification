@@ -68,7 +68,7 @@ export function CollapsibleSidebar({
 
         {/* Sidebar */}
         <aside
-          className={`fixed top-0 z-50 h-full w-[280px] bg-white shadow-2xl transition-transform duration-300 ease-in-out sm:w-[320px] md:w-[360px]${
+          className={`fixed top-0 z-50 h-full w-[280px] bg-white shadow-2xl transition-transform duration-300 ease-in-out dark:bg-gray-800 sm:w-[320px] md:w-[360px] ${
             position === 'left' ? 'left-0' : 'right-0'
           } ${
             isOpen
@@ -79,13 +79,14 @@ export function CollapsibleSidebar({
           }`}
         >
           {/* Close Button */}
-          <div className="flex items-center justify-between border-b bg-gray-50 p-4">
-            <h3 className="font-semibold text-gray-900">
+          <div className="flex items-center justify-between border-b bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
+            <h3 className="font-semibold text-gray-900 dark:text-white">
               {position === 'left' ? 'Left Sidebar' : 'Right Sidebar'}
             </h3>
             <button
+              type="button"
               onClick={onClose}
-              className="rounded-lg p-2 text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-900"
+              className="rounded-lg p-2 text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
               aria-label="Close sidebar"
             >
               <svg

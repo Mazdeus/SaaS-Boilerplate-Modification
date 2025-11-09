@@ -38,13 +38,30 @@ export function useSidebar() {
 
     // Handle window resize
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
+      const mobile = window.innerWidth < 1024;
+      const wasMobile = isMobile;
+
+      setIsMobile(mobile);
+
+      // Auto-close sidebars when resizing to mobile
+      if (mobile && !wasMobile) {
+        setSidebarState({
+          left: false,
+          right: false,
+        });
+      } else if (!mobile && wasMobile) {
+        // Auto-open sidebars when resizing to desktop
+        setSidebarState({
+          left: true,
+          right: true,
+        });
+      }
     };
 
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
-  }, []); // Run only once on mount
+  }, [isMobile]); // Add isMobile as dependency to track changes
 
   // Toggle sidebar
   const toggleSidebar = useCallback((position: SidebarPosition) => {

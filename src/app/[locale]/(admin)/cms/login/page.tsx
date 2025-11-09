@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import { Suspense, useEffect, useState } from 'react';
 
 function LoginForm() {
   const router = useRouter();
@@ -41,32 +41,29 @@ function LoginForm() {
 
       if (result?.error) {
         setError('Invalid email or password. Please try again.');
-      }
-      else if (result?.ok) {
+      } else if (result?.ok) {
         // Success! Redirect to dashboard
         router.push('/en/cms/dashboard');
         router.refresh();
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Login error:', err);
       setError('An unexpected error occurred. Please try again.');
-    }
-    finally {
+    } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 px-4 dark:from-gray-900 dark:to-gray-800">
       <div className="w-full max-w-md">
         {/* Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 space-y-6">
+        <div className="space-y-6 rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
           {/* Logo & Title */}
-          <div className="text-center space-y-2">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <span className="text-white text-2xl font-bold">B</span>
+          <div className="space-y-2 text-center">
+            <div className="mb-4 flex justify-center">
+              <div className="flex size-16 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-purple-600">
+                <span className="text-2xl font-bold text-white">B</span>
               </div>
             </div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -79,10 +76,10 @@ function LoginForm() {
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+            <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
               <div className="flex items-center gap-2">
                 <svg
-                  className="w-5 h-5 text-red-600 dark:text-red-400"
+                  className="size-5 text-red-600 dark:text-red-400"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -103,7 +100,7 @@ function LoginForm() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Email Address
               </label>
@@ -112,7 +109,7 @@ function LoginForm() {
                 type="email"
                 value={formData.email}
                 onChange={e => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 placeholder="admin@brodo.com"
                 required
                 disabled={isLoading}
@@ -123,7 +120,7 @@ function LoginForm() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Password
               </label>
@@ -132,7 +129,7 @@ function LoginForm() {
                 type="password"
                 value={formData.password}
                 onChange={e => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 placeholder="••••••••"
                 required
                 disabled={isLoading}
@@ -143,67 +140,55 @@ function LoginForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-4 rounded-lg hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02]"
+              className="w-full rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg
-                    className="animate-spin h-5 w-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  Signing in...
-                </span>
-              ) : (
-                'Sign In'
-              )}
+              {isLoading
+                ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg
+                        className="size-5 animate-spin"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      Signing in...
+                    </span>
+                  )
+                : (
+                    'Sign In'
+                  )}
             </button>
           </form>
-
-          {/* Default Credentials Info */}
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-            <p className="text-xs text-blue-700 dark:text-blue-400 font-medium mb-2">
-              📝 Default Credentials:
-            </p>
-            <div className="space-y-1 text-xs text-blue-600 dark:text-blue-300">
-              <p>Email: <span className="font-mono font-semibold">admin@brodo.com</span></p>
-              <p>Password: <span className="font-mono font-semibold">Admin123!</span></p>
-            </div>
-            <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
-              ⚠️ Change password after first login!
-            </p>
-          </div>
 
           {/* Footer */}
           <div className="text-center text-sm text-gray-500 dark:text-gray-400">
             <p>© 2025 BRODO Indonesia</p>
-            <p className="text-xs mt-1">Crafted with pride in Bandung</p>
+            <p className="mt-1 text-xs">Crafted with pride in Bandung</p>
           </div>
         </div>
 
         {/* Back to Website Link */}
-        <div className="text-center mt-6">
+        <div className="mt-6 text-center">
           <a
             href="/company-profile"
-            className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors inline-flex items-center gap-2"
+            className="inline-flex items-center gap-2 text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
           >
             <svg
-              className="w-4 h-4"
+              className="size-4"
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
