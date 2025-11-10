@@ -433,6 +433,43 @@ You also require to run the command each time you want to update the database sc
 
 ### Deploy to production
 
+#### 🚀 Quick Deployment to Azure with Docker
+
+This project includes complete deployment guides for deploying to Azure with Docker and custom domain support:
+
+**📖 Deployment Guides Available:**
+- **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Complete step-by-step guide for Azure deployment with Docker and Namecheap domain
+- **[QUICK_DEPLOYMENT.md](./QUICK_DEPLOYMENT.md)** - Quick reference for fast deployment (30 minutes)
+
+**🐳 Docker Support:**
+The project includes production-ready Docker configuration:
+- `Dockerfile` - Multi-stage build for optimized images
+- `docker-compose.yml` - Easy local testing and deployment
+- `.dockerignore` - Optimized build context
+
+**⚡ One-Command Deployment:**
+```powershell
+# Automated deployment script
+.\deploy.ps1
+```
+
+**Features of Docker Deployment:**
+- ✅ Deploy to Azure Container Apps
+- ✅ Custom domain with Namecheap
+- ✅ Automatic SSL/HTTPS with Let's Encrypt
+- ✅ Auto-scaling support
+- ✅ Production-ready configuration
+- ✅ Environment variable management
+- ✅ Docker image optimization
+
+**Deployment Targets Covered:**
+- Azure Container Apps (Primary)
+- Azure Container Registry
+- Custom domain configuration
+- SSL certificate setup
+
+#### 🔧 Manual Production Build
+
 During the build process, database migrations are automatically executed, so there's no need to run them manually. However, you must define `DATABASE_URL` in your environment variables.
 
 Then, you can generate a production build with:
