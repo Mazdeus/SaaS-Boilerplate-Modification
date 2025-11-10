@@ -4,6 +4,10 @@ import { aboutSection } from '@/models/SchemaCMS';
 import { eq } from 'drizzle-orm';
 import { requireAdminAuth } from '@/utils/auth-server';
 
+// Force dynamic rendering for CMS API routes
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function PUT(
   request: Request,
   { params }: { params: { id: string } }

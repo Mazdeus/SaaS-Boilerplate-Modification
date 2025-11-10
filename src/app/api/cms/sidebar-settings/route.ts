@@ -4,6 +4,10 @@ import { db } from '@/libs/DB';
 import { siteSettings } from '@/models/SchemaCMS';
 import { requireAdminAuth } from '@/utils/auth-server';
 
+// Tambahkan export untuk mengatasi static generation
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function GET() {
   try {
     const session = await requireAdminAuth();

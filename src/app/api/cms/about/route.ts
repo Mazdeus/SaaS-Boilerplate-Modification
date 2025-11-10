@@ -3,6 +3,10 @@ import { db } from '@/libs/DB';
 import { aboutSection } from '@/models/SchemaCMS';
 import { requireAdminAuth } from '@/utils/auth-server';
 
+// Force dynamic rendering for CMS API routes
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function GET() {
   try {
     const session = await requireAdminAuth();
