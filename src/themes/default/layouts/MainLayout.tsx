@@ -10,6 +10,7 @@ import React from 'react';
 
 import { AreaRenderer } from '@/components/AreaRenderer';
 import { CollapsibleSidebar } from '@/components/CollapsibleSidebar';
+import { ScrollToTopButton } from '@/components/ScrollToTopButton';
 import { AREAS } from '@/core/types';
 import { useSidebar } from '@/hooks/useSidebar';
 
@@ -102,6 +103,13 @@ export function MainLayout({ children, className = '' }: MainLayoutProps) {
 
       {/* Footer */}
       <Footer />
+
+      {/* Scroll to Top Button - Positioned above DemoBadge */}
+      <ScrollToTopButton 
+        threshold={300} 
+        bottom={80} 
+        right={24} 
+      />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import { Star } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 type Testimonial = {
@@ -32,7 +33,7 @@ export function TestimonialsSection() {
 
   if (loading) {
     return (
-      <section id="testimonials" className="py-16">
+      <section id="testimonials" className="bg-white py-16">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
             <h2 className="mb-4 text-4xl font-bold text-gray-900">
@@ -62,36 +63,34 @@ export function TestimonialsSection() {
   }
 
   return (
-    <section id="testimonials" className="py-16">
+    <section id="testimonials" className="bg-gray-50 py-16">
       <div className="container mx-auto px-4">
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-4xl font-bold text-gray-900">
+        <div className="mb-16 text-center">
+          <h2 className="mb-4 text-3xl font-semibold text-gray-900">
             Apa Kata Mereka
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="text-sm text-gray-600">
             Testimoni dari pengguna setia BRODO
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {testimonials.map(testimonial => (
             <div
               key={testimonial.id}
-              className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
+              className="bg-white p-8 transition-all hover:bg-gray-50"
             >
-              <div className="mb-4 flex gap-1">
+              <div className="mb-5 flex gap-0.5">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <span key={`star-${testimonial.id}-${i}`} className="text-yellow-500">★</span>
+                  <Star key={`star-${testimonial.id}-${i}`} className="size-4 fill-gray-900 text-gray-900" />
                 ))}
               </div>
-              <p className="mb-4 italic text-gray-700">
-                "
-                {testimonial.content}
-                "
+              <p className="mb-6 leading-relaxed text-gray-600">
+                "{testimonial.content}"
               </p>
-              <div className="border-t border-gray-100 pt-4">
+              <div className="border-t border-gray-100 pt-5">
                 <p className="font-semibold text-gray-900">{testimonial.customerName}</p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-500">
                   {testimonial.customerPosition}
                   {testimonial.company && `, ${testimonial.company}`}
                 </p>

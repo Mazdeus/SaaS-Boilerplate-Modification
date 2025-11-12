@@ -31,7 +31,7 @@ import { FeaturedProductWidget } from '@/plugins/featured-product/FeaturedProduc
 import ProductionInsightWidget from '@/plugins/production-insight/ProductionInsightWidget';
 import { StoreLocatorWidget } from '@/plugins/store-locator/StoreLocatorWidget';
 import { SustainabilityWidget } from '@/plugins/sustainability/SustainabilityWidget';
-import { MainLayout } from '@/themes/default/layouts/MainLayout';
+import { SimpleLayout } from '@/themes/default/layouts/SimpleLayout';
 
 // Define plugin mapping for this page
 const companyPagePlugins = {
@@ -165,7 +165,7 @@ export default function CompanyProfilePage() {
   }, []);
 
   return (
-    <MainLayout>
+    <SimpleLayout>
       {/* Hero Area uses SLIDESHOW via Area System */}
       {/* The slideshow is registered to AREAS.HERO above */}
 
@@ -185,8 +185,9 @@ export default function CompanyProfilePage() {
       <section id="contact" className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
+            <p className="mb-2 text-sm font-medium text-amber-700">Hubungi Kami</p>
             <h2 className="mb-4 text-4xl font-bold text-gray-900">
-              Hubungi Kami
+              Mari Berbicara
             </h2>
             <p className="text-xl text-gray-600">
               Punya pertanyaan? Kami siap membantu Anda!
@@ -196,23 +197,26 @@ export default function CompanyProfilePage() {
         </div>
       </section>
 
-      {/* Contact CTA Section */}
-      <section className="bg-blue-600 py-16 text-white">
-        <div className="container mx-auto px-4 text-center">
+      {/* Contact CTA Section - Warm Brown Leather Tone */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-amber-900 via-stone-800 to-brown-900 py-20 text-white">
+        {/* Subtle leather texture overlay */}
+        <div className="absolute inset-0 bg-[url('/assets/leather-texture.png')] opacity-5" />
+        
+        <div className="container relative z-10 mx-auto px-4 text-center">
           <h2 className="mb-4 text-4xl font-bold">Siap Memulai Langkah Baru?</h2>
-          <p className="mb-8 text-xl text-blue-100">
+          <p className="mb-8 text-xl text-amber-100">
             Atau hubungi kami langsung untuk respons lebih cepat
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <a
               href="mailto:hello@bro.do"
-              className="rounded-lg bg-white px-8 py-3 font-semibold text-blue-600 transition-colors hover:bg-blue-50"
+              className="rounded-lg bg-amber-50 px-8 py-3 font-semibold text-amber-900 transition-all hover:scale-105 hover:bg-white hover:shadow-xl"
             >
               Email Kami
             </a>
             <a
               href="tel:+622288115555"
-              className="rounded-lg border-2 border-white px-8 py-3 font-semibold transition-colors hover:bg-white hover:text-blue-600"
+              className="rounded-lg border-2 border-amber-50 px-8 py-3 font-semibold text-amber-50 transition-all hover:bg-amber-50 hover:text-amber-900"
             >
               Hubungi Sekarang
             </a>
@@ -220,47 +224,19 @@ export default function CompanyProfilePage() {
               href="https://bro.do"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-lg border-2 border-white px-8 py-3 font-semibold transition-colors hover:bg-white hover:text-blue-600"
+              className="rounded-lg border-2 border-amber-50 px-8 py-3 font-semibold text-amber-50 transition-all hover:bg-amber-50 hover:text-amber-900"
             >
               Kunjungi Toko
             </a>
           </div>
           <div className="mt-8">
-            <p className="text-sm text-blue-100">
+            <p className="text-sm text-amber-100">
               Alamat: Jl. Gudang Utara No. 40B, Bandung, Indonesia
             </p>
           </div>
         </div>
       </section>
 
-      {/* Templating Info Banner */}
-      <div className="border-t border-gray-200 bg-gray-50 py-8">
-        <div className="container mx-auto px-4">
-          <div className="rounded-lg border border-blue-200 bg-blue-50 p-6">
-            <h3 className="mb-3 text-lg font-bold text-blue-900">
-              🎓 Templating Concepts - BRODO Company Profile
-            </h3>
-            <div className="grid gap-3 text-sm md:grid-cols-2 lg:grid-cols-4">
-              <div className="rounded-lg bg-white p-3">
-                <p className="mb-1 font-semibold text-gray-900">Layout & Partial</p>
-                <p className="text-gray-600">Header, Footer reusable dengan navigasi anchor scroll</p>
-              </div>
-              <div className="rounded-lg bg-white p-3">
-                <p className="mb-1 font-semibold text-gray-900">Area/Region System</p>
-                <p className="text-gray-600">Slideshow di Hero, Widgets di Sidebars (Info, Values, Team)</p>
-              </div>
-              <div className="rounded-lg bg-white p-3">
-                <p className="mb-1 font-semibold text-gray-900">Plugin System</p>
-                <p className="text-gray-600">4 plugins: Slideshow, CompanyInfo, Values, Team</p>
-              </div>
-              <div className="rounded-lg bg-white p-3">
-                <p className="mb-1 font-semibold text-gray-900">Real Content</p>
-                <p className="text-gray-600">BRODO - Brand Sepatu Lokal Bandung sejak 2010</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </MainLayout>
+    </SimpleLayout>
   );
 }

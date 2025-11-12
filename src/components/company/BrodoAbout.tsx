@@ -6,6 +6,7 @@
  * Part of Layout & Partial System - Templating Praktikum Week 9
  */
 
+import { Target, Rocket } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 export function BrodoAbout() {
@@ -62,7 +63,7 @@ export function BrodoAbout() {
       <div className="container mx-auto px-4">
         {/* About us Header */}
         <div className="mb-12 text-center">
-          <p className="mb-2 text-sm font-medium text-blue-600">Tentang Kami</p>
+          <p className="mb-2 text-sm font-medium text-amber-700">Tentang Kami</p>
           <h2 className="mb-4 text-4xl font-bold text-gray-900">
             {aboutData?.title || 'Siapa Kami'}
           </h2>
@@ -99,71 +100,71 @@ export function BrodoAbout() {
         </div>
 
         {/* Mission & Vision */}
-        <div className="mb-16 grid gap-8 md:grid-cols-2">
+        <div className="mb-16 grid gap-6 md:grid-cols-2">
           {/* Mission */}
-          <div className="rounded-lg border border-gray-200 bg-white p-8">
-            <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-blue-100">
-              <span className="text-2xl">🎯</span>
+          <div className="group bg-white p-10 transition-all hover:bg-gray-50">
+            <div className="mb-5 inline-flex">
+              <Target className="size-7 text-gray-900" strokeWidth={1.5} />
             </div>
-            <h3 className="mb-4 text-2xl font-bold text-gray-900">Misi Kami</h3>
-            <p className="text-gray-600">
+            <h3 className="mb-3 text-xl font-semibold text-gray-900">Misi Kami</h3>
+            <p className="leading-relaxed text-gray-600">
               {aboutData?.mission || 'Memberdayakan industri alas kaki lokal dan memperkuat kebanggaan terhadap produk Indonesia. Kami memanfaatkan kerajinan lokal di Cibaduyut dan material premium untuk menghasilkan sepatu berkualitas internasional.'}
             </p>
           </div>
 
           {/* Vision */}
-          <div className="rounded-lg border border-gray-200 bg-white p-8">
-            <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-purple-100">
-              <span className="text-2xl">🚀</span>
+          <div className="group bg-white p-10 transition-all hover:bg-gray-50">
+            <div className="mb-5 inline-flex">
+              <Rocket className="size-7 text-gray-900" strokeWidth={1.5} />
             </div>
-            <h3 className="mb-4 text-2xl font-bold text-gray-900">Visi Kami</h3>
-            <p className="text-gray-600">
+            <h3 className="mb-3 text-xl font-semibold text-gray-900">Visi Kami</h3>
+            <p className="leading-relaxed text-gray-600">
               {aboutData?.vision || 'Menjadi brand gaya hidup pria terdepan di Asia Tenggara. Kami berkomitmen untuk terus berinovasi dan menghadirkan produk yang tidak hanya stylish, tetapi juga mencerminkan identitas dan kebanggaan Indonesia.'}
             </p>
           </div>
         </div>
 
         {/* Company Info Stats */}
-        <div className="mb-8 rounded-lg bg-white p-8 shadow-sm">
-          <h3 className="mb-6 text-center text-2xl font-bold text-gray-900">
+        <div className="mb-8 bg-white p-10">
+          <h3 className="mb-10 text-center text-xl font-semibold text-gray-900">
             BRODO dalam Angka
           </h3>
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4">
             <div className="text-center">
-              <div className="mb-2 text-4xl font-bold text-blue-600">{companyInfo?.foundedYear || '2010'}</div>
-              <div className="text-sm font-medium text-gray-700">Tahun Berdiri</div>
+              <div className="mb-2 text-5xl font-bold tracking-tight text-gray-900">{companyInfo?.foundedYear || '2010'}</div>
+              <div className="text-sm text-gray-500">Tahun Berdiri</div>
             </div>
             <div className="text-center">
-              <div className="mb-2 text-4xl font-bold text-green-600">{companyInfo?.employees || '50+'}+</div>
-              <div className="text-sm font-medium text-gray-700">Tim Berpengalaman</div>
+              <div className="mb-2 text-5xl font-bold tracking-tight text-gray-900">{companyInfo?.employees || '50'}+</div>
+              <div className="text-sm text-gray-500">Tim Berpengalaman</div>
             </div>
             <div className="text-center">
-              <div className="mb-2 text-4xl font-bold text-purple-600">100K+</div>
-              <div className="text-sm font-medium text-gray-700">Produk Terjual</div>
+              <div className="mb-2 text-5xl font-bold tracking-tight text-gray-900">100K+</div>
+              <div className="text-sm text-gray-500">Produk Terjual</div>
             </div>
             <div className="text-center">
-              <div className="mb-2 text-4xl font-bold text-orange-600">15+</div>
-              <div className="text-sm font-medium text-gray-700">Tahun Pengalaman</div>
+              <div className="mb-2 text-5xl font-bold tracking-tight text-gray-900">15+</div>
+              <div className="text-sm text-gray-500">Tahun Pengalaman</div>
             </div>
           </div>
         </div>
 
         {/* Founders Info */}
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-8">
-          <h3 className="mb-6 text-center text-2xl font-bold text-gray-900">
+        <div className="border-t border-gray-100 bg-white p-10 pt-16">
+          <h3 className="mb-10 text-center text-xl font-semibold text-gray-900">
             Para Pendiri
           </h3>
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-12 md:grid-cols-2">
             {/* Founder 1 */}
             <div className="flex flex-col items-center text-center">
               <img 
                 src="/assets/muhammad-yukka.webp" 
                 alt="Muhammad Yukka Harlanda"
-                className="mb-4 size-24 rounded-full object-cover"
+                className="mb-5 size-28 rounded-full object-cover grayscale transition-all hover:grayscale-0"
               />
-              <h4 className="mb-1 text-lg font-bold text-gray-900">Muhammad Yukka Harlanda</h4>
-              <p className="mb-3 text-sm font-medium text-blue-600">Co-Founder & CEO</p>
-              <p className="text-sm text-gray-600">
+              <h4 className="mb-1 text-base font-semibold text-gray-900">Muhammad Yukka Harlanda</h4>
+              <p className="mb-4 text-sm text-gray-500">Co-Founder & CEO</p>
+              <p className="text-sm leading-relaxed text-gray-600">
                 Insinyur muda yang memulai BRODO dari kebutuhan pribadi akan sepatu berkualitas. 
                 Dengan visi kuat, ia membawa BRODO menjadi brand lokal yang diakui.
               </p>
@@ -174,11 +175,11 @@ export function BrodoAbout() {
               <img 
                 src="/assets/putera-dwi.webp" 
                 alt="Putera Dwi Karunia"
-                className="mb-4 size-24 rounded-full object-cover"
+                className="mb-5 size-28 rounded-full object-cover grayscale transition-all hover:grayscale-0"
               />
-              <h4 className="mb-1 text-lg font-bold text-gray-900">Putera Dwi Karunia</h4>
-              <p className="mb-3 text-sm font-medium text-blue-600">Co-Founder & Creative Partner</p>
-              <p className="text-sm text-gray-600">
+              <h4 className="mb-1 text-base font-semibold text-gray-900">Putera Dwi Karunia</h4>
+              <p className="mb-4 text-sm text-gray-500">Co-Founder & Creative Partner</p>
+              <p className="text-sm leading-relaxed text-gray-600">
                 Partner kreatif yang memastikan setiap desain BRODO memiliki karakter unik dan 
                 sesuai dengan gaya hidup pria Indonesia modern.
               </p>

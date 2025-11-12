@@ -6,6 +6,7 @@
  * Part of Layout & Partial System - Templating Praktikum Week 9
  */
 
+import { Check, ArrowRight } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 type Product = {
@@ -79,73 +80,63 @@ export function BrodoProducts() {
     );
   }
   return (
-    <section id="products" className="bg-white py-20">
+    <section id="products" className="bg-gray-50 py-20">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="mb-12 text-center">
-          <p className="mb-2 text-sm font-medium text-blue-600">Produk Kami</p>
-          <h2 className="mb-4 text-4xl font-bold text-gray-900">
+        <div className="mb-16 text-center">
+          <p className="mb-2 text-sm text-gray-500">Produk Kami</p>
+          <h2 className="mb-4 text-3xl font-semibold text-gray-900">
             Koleksi BRODO
           </h2>
-          <p className="mx-auto max-w-3xl text-lg text-gray-600">
+          <p className="mx-auto max-w-2xl leading-relaxed text-gray-600">
             Kami menghadirkan berbagai lini produk - dirancang untuk gaya hidup pria Indonesia yang dinamis
           </p>
         </div>
 
         {/* Products Grid */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {collections.map(product => (
             <div
               key={product.id}
-              className="group overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-blue-500 hover:shadow-lg"
+              className="group overflow-hidden bg-white transition-all hover:bg-gray-50"
             >
               {/* Product Image as Background */}
-              <div className="relative h-48 w-full overflow-hidden">
+              <div className="relative h-64 w-full overflow-hidden">
                 <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-110"
+                  className="absolute inset-0 bg-cover bg-center grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
                   style={{ backgroundImage: `url(${product.image})` }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <h3 className="absolute bottom-4 left-4 text-2xl font-bold text-white">{product.title}</h3>
               </div>
 
               {/* Content */}
               <div className="p-6">
+                {/* Title */}
+                <h3 className="mb-2 text-lg font-semibold text-gray-900">{product.title}</h3>
+                
                 {/* Description */}
-                <p className="mb-4 text-sm text-gray-600">{product.description}</p>
+                <p className="mb-4 text-sm leading-relaxed text-gray-600">{product.description}</p>
 
                 {/* Features List */}
                 {product.features.length > 0 && (
-                  <ul className="mb-6 space-y-2">
+                  <ul className="mb-5 space-y-1.5">
                     {product.features.map((feature, index) => (
-                      <li key={`${product.id}-feature-${index}`} className="flex items-center text-sm text-gray-700">
-                        <svg
-                          className="mr-2 size-4 text-blue-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
+                      <li key={`${product.id}-feature-${index}`} className="flex items-start text-xs text-gray-500">
+                        <Check className="mr-2 mt-0.5 size-3.5 shrink-0 text-gray-400" />
                         {feature}
                       </li>
                     ))}
                   </ul>
                 )}
 
-                {/* CTA Button */}
+                {/* CTA Link */}
                 <a
                   href={product.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full rounded-md bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-blue-700"
+                  className="inline-flex items-center text-sm font-medium text-gray-900 transition-colors hover:text-gray-600"
                 >
                   Lihat Koleksi
+                  <ArrowRight className="ml-1 size-4" />
                 </a>
               </div>
             </div>
@@ -154,25 +145,27 @@ export function BrodoProducts() {
 
         {/* Featured Product Highlight */}
         {featuredProduct && (
-          <div className="mt-16 overflow-hidden rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-white">
-            <div className="grid items-center gap-8 md:grid-cols-2">
+          <div className="mt-16 border-t border-gray-200 bg-white p-10">
+            <div className="grid items-center gap-10 md:grid-cols-2">
               <div>
-                <h3 className="mb-4 text-3xl font-bold">Produk Unggulan</h3>
-                <p className="mb-6 text-lg text-blue-100">
-                  {featuredProduct.name} - {featuredProduct.description}
+                <p className="mb-2 text-sm text-gray-500">Produk Unggulan</p>
+                <h3 className="mb-4 text-2xl font-semibold text-gray-900">{featuredProduct.name}</h3>
+                <p className="mb-6 leading-relaxed text-gray-600">
+                  {featuredProduct.description}
                 </p>
                 <a
                   href={featuredProduct.url || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block rounded-lg bg-white px-8 py-3 font-semibold text-blue-600 transition-colors hover:bg-blue-50"
+                  className="inline-flex items-center font-medium text-gray-900 transition-colors hover:text-gray-600"
                 >
                   Lihat Detail
+                  <ArrowRight className="ml-2 size-4" />
                 </a>
               </div>
-              <div className="overflow-hidden rounded-lg">
+              <div className="overflow-hidden">
                 <div
-                  className="h-64 w-full bg-cover bg-center"
+                  className="h-80 w-full bg-cover bg-center grayscale transition-all hover:grayscale-0"
                   style={{ backgroundImage: `url(${featuredProduct.imageUrl || '/assets/img-stock-5.webp'})` }}
                 />
               </div>
@@ -181,20 +174,18 @@ export function BrodoProducts() {
         )}
 
         {/* Shop CTA */}
-        <div className="mt-12 text-center">
-          <p className="mb-4 text-gray-600">
+        <div className="mt-16 border-t border-gray-200 bg-white p-10 text-center">
+          <p className="mb-5 text-sm text-gray-600">
             Temukan lebih banyak produk BRODO di toko online kami
           </p>
           <a
             href="https://bro.do"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border-2 border-blue-600 px-8 py-3 font-semibold text-blue-600 transition-colors hover:bg-blue-600 hover:text-white"
+            className="inline-flex items-center gap-2 font-medium text-gray-900 transition-colors hover:text-gray-600"
           >
             Kunjungi Toko BRODO
-            <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
+            <ArrowRight className="size-4" />
           </a>
         </div>
       </div>

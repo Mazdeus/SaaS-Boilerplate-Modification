@@ -20,6 +20,14 @@ type Slide = {
   ctaLink: string;
 };
 
+// Default shoe backgrounds for variety
+const defaultShoeBackgrounds = [
+  '/assets/brodo-gentlemen.webp',
+  '/assets/brodo-ventura.webp', 
+  '/assets/brodo-alpha.webp',
+  '/assets/brogues.webp',
+];
+
 export function CompanySlideshowPlugin() {
   const [slides, setSlides] = useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -34,15 +42,16 @@ export function CompanySlideshowPlugin() {
         
         if (data.success && data.data.length > 0) {
           // Transform API data to Slide format
-          const transformedSlides = data.data.map((item: any) => ({
+          const transformedSlides = data.data.map((item: any, index: number) => ({
             id: item.id,
             title: item.title,
             subtitle: item.subtitle || '',
             description: item.description || '',
             background: item.gradientFrom && item.gradientTo 
               ? `from-${item.gradientFrom} to-${item.gradientTo}`
-              : 'from-blue-600 to-blue-800',
-            backgroundImage: item.imageUrl || undefined,
+              : 'from-amber-900/90 via-stone-800/90 to-brown-900/90',
+            // Use API image OR default shoe background (rotate through array)
+            backgroundImage: item.imageUrl || defaultShoeBackgrounds[index % defaultShoeBackgrounds.length],
             ctaText: item.ctaText || 'Learn More',
             ctaLink: item.ctaLink || '#',
           }));
@@ -85,7 +94,7 @@ export function CompanySlideshowPlugin() {
   if (isLoading) {
     return (
       <section className="relative overflow-hidden">
-        <div className="relative bg-gradient-to-br from-blue-600 to-blue-800 py-20 text-white">
+        <div className="relative bg-gradient-to-br from-amber-900 via-stone-800 to-brown-900 py-20 text-white">
           <div className="container relative z-10 mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
               <div className="animate-pulse">
@@ -104,7 +113,7 @@ export function CompanySlideshowPlugin() {
   if (slides.length === 0) {
     return (
       <section className="relative overflow-hidden">
-        <div className="relative bg-gradient-to-br from-gray-600 to-gray-800 py-20 text-white">
+        <div className="relative bg-gradient-to-br from-amber-900 via-stone-800 to-brown-900 py-20 text-white">
           <div className="container relative z-10 mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="mb-4 text-5xl font-bold">No Content Available</h1>
@@ -126,15 +135,15 @@ export function CompanySlideshowPlugin() {
     <section className="relative overflow-hidden">
       {/* Slideshow Container with Background Image */}
       <div
-        className="relative bg-cover bg-center py-20 text-white transition-all duration-500"
+        className="relative bg-cover bg-center py-32 text-white transition-all duration-1000"
         style={{
           backgroundImage: currentSlideData.backgroundImage 
             ? `url(${currentSlideData.backgroundImage})` 
             : 'none',
         }}
       >
-        {/* Overlay */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${currentSlideData.background} opacity-80`} />
+        {/* Overlay with warm brown tones */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${currentSlideData.background}`} />
         
         <div className="container relative z-10 mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
@@ -157,15 +166,15 @@ export function CompanySlideshowPlugin() {
               <div className="flex justify-center gap-4">
                 <a
                   href={currentSlideData.ctaLink}
-                  className="rounded-lg bg-white px-8 py-3 font-semibold text-gray-900 transition-all hover:scale-105 hover:shadow-lg"
+                  className="rounded-lg bg-amber-50 px-8 py-3 font-semibold text-amber-900 transition-all hover:scale-105 hover:bg-white hover:shadow-xl"
                 >
                   {currentSlideData.ctaText}
                 </a>
                 <a
                   href="#about"
-                  className="rounded-lg border-2 border-white px-8 py-3 font-semibold transition-all hover:bg-white hover:text-gray-900"
+                  className="rounded-lg border-2 border-amber-50 px-8 py-3 font-semibold text-amber-50 transition-all hover:bg-amber-50 hover:text-amber-900"
                 >
-                  Learn More
+                  Pelajari Lebih Lanjut
                 </a>
               </div>
             </div>
