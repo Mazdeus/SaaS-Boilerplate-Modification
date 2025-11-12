@@ -18,7 +18,7 @@ export default function CMSNavigation() {
         <div className="flex items-center space-x-4">
           <Link 
             href="/en/cms/dashboard" 
-            className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition-colors"
+            className="flex items-center space-x-2 text-amber-700 hover:text-amber-900 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
               <path d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -28,7 +28,7 @@ export default function CMSNavigation() {
           
           <span className="text-gray-300">|</span>
           
-          <h1 className="text-xl font-semibold text-gray-800">
+          <h1 className="text-lg font-semibold text-gray-800">
             {getPageTitle(pathname)}
           </h1>
         </div>

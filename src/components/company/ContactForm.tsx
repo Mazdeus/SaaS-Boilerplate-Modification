@@ -153,7 +153,7 @@ export function ContactForm() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className={`w-full border-b-2 bg-transparent px-0 py-3 transition-colors focus:outline-none ${
+              className={`w-full border-b-2 bg-transparent px-2 py-3 transition-colors focus:outline-none ${
                 errors.name
                   ? 'border-red-500 focus:border-red-600'
                   : 'border-gray-200 focus:border-amber-700'
@@ -175,7 +175,7 @@ export function ContactForm() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full border-b-2 bg-transparent px-0 py-3 transition-colors focus:outline-none ${
+              className={`w-full border-b-2 bg-transparent px-2 py-3 transition-colors focus:outline-none ${
                 errors.email
                   ? 'border-red-500 focus:border-red-600'
                   : 'border-gray-200 focus:border-amber-700'
@@ -197,7 +197,7 @@ export function ContactForm() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full border-b-2 border-gray-200 bg-transparent px-0 py-3 transition-colors focus:border-amber-700 focus:outline-none"
+              className="w-full border-b-2 border-gray-200 bg-transparent px-2 py-3 transition-colors focus:border-amber-700 focus:outline-none"
               placeholder="+62 812-3456-7890"
             />
           </div>
@@ -213,7 +213,7 @@ export function ContactForm() {
               name="subject"
               value={formData.subject}
               onChange={handleChange}
-              className={`w-full border-b-2 bg-transparent px-0 py-3 transition-colors focus:outline-none ${
+              className={`w-full border-b-2 bg-transparent px-2 py-3 transition-colors focus:outline-none ${
                 errors.subject
                   ? 'border-red-500 focus:border-red-600'
                   : 'border-gray-200 focus:border-amber-700'
@@ -235,7 +235,7 @@ export function ContactForm() {
               value={formData.message}
               onChange={handleChange}
               rows={5}
-              className={`w-full border-b-2 bg-transparent px-0 py-3 transition-colors focus:outline-none ${
+              className={`w-full border-b-2 bg-transparent px-2 py-3 transition-colors focus:outline-none ${
                 errors.message
                   ? 'border-red-500 focus:border-red-600'
                   : 'border-gray-200 focus:border-amber-700'

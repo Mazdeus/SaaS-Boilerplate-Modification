@@ -55,28 +55,28 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 px-4 dark:from-gray-900 dark:to-gray-800">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-stone-100 to-amber-50 px-4 dark:from-gray-900 dark:to-gray-800">
       <div className="w-full max-w-md">
         {/* Card */}
-        <div className="space-y-6 rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
+        <div className="space-y-6 rounded-xl bg-white p-8 shadow-xl dark:bg-gray-800">
           {/* Logo & Title */}
           <div className="space-y-2 text-center">
             <div className="mb-4 flex justify-center">
-              <div className="flex size-16 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-purple-600">
+              <div className="flex size-16 items-center justify-center rounded-lg bg-gradient-to-br from-amber-700 to-amber-900">
                 <span className="text-2xl font-bold text-white">B</span>
               </div>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
               BRODO CMS
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Content Management System
             </p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+            <div className="border-l-2 border-red-600 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
               <div className="flex items-center gap-2">
                 <svg
                   className="size-5 text-red-600 dark:text-red-400"
@@ -109,7 +109,7 @@ function LoginForm() {
                 type="email"
                 value={formData.email}
                 onChange={e => setFormData({ ...formData, email: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className="w-full border-b-2 border-gray-200 bg-transparent px-2 py-3 text-gray-900 transition-colors focus:border-amber-700 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-amber-500"
                 placeholder="admin@brodo.com"
                 required
                 disabled={isLoading}
@@ -129,18 +129,18 @@ function LoginForm() {
                 type="password"
                 value={formData.password}
                 onChange={e => setFormData({ ...formData, password: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className="w-full border-b-2 border-gray-200 bg-transparent px-2 py-3 text-gray-900 transition-colors focus:border-amber-700 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-amber-500"
                 placeholder="••••••••"
                 required
                 disabled={isLoading}
               />
             </div>
 
-            {/* Submit Button */}
+            {/* Submit Button - Warm Brown Theme with Rounded */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-3 font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-lg bg-gradient-to-r from-amber-700 to-amber-900 px-4 py-4 font-semibold text-white transition-all hover:from-amber-800 hover:to-brown-900 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-500"
             >
               {isLoading
                 ? (

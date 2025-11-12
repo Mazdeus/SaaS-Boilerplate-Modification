@@ -213,7 +213,7 @@ export default function TeamManagementPage() {
             </div>
             <button
               onClick={handleCreate}
-              className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              className="rounded-lg bg-gradient-to-r from-amber-700 to-amber-900 px-4 py-2 text-white transition-all hover:from-amber-800 hover:to-brown-900 hover:shadow-lg"
             >
               Add Team Member
             </button>
@@ -280,7 +280,7 @@ export default function TeamManagementPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={handleSave}
-                    className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                    className="rounded-lg bg-gradient-to-r from-amber-700 to-amber-900 px-4 py-2 text-white transition-all hover:from-amber-800 hover:to-brown-900"
                   >
                     Save
                   </button>
@@ -314,14 +314,14 @@ export default function TeamManagementPage() {
                   )}
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-gray-900">{member.name}</h3>
-                    <p className="text-blue-600">{member.position}</p>
+                    <p className="text-amber-700">{member.position}</p>
                     {member.bio && <p className="mt-2 text-sm text-gray-600">{member.bio}</p>}
                     {member.linkedinUrl && (
                       <a
                         href={member.linkedinUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-2 inline-block text-sm text-blue-600 hover:underline"
+                        className="mt-2 inline-block text-sm text-amber-700 hover:text-amber-900 hover:underline"
                       >
                         LinkedIn Profile →
                       </a>
@@ -331,7 +331,7 @@ export default function TeamManagementPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleEdit(member)}
-                    className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+                    className="rounded-lg bg-gradient-to-r from-amber-700 to-amber-900 px-4 py-2 text-sm text-white transition-all hover:from-amber-800 hover:to-brown-900"
                   >
                     Edit
                   </button>

@@ -281,7 +281,7 @@ export default function CompanyBranchesPage() {
             <div className="md:col-span-2">
               <button
                 onClick={handleCreate}
-                className="rounded bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
+                className="rounded-lg bg-gradient-to-r from-amber-700 to-amber-900 px-6 py-2 text-white transition-all hover:from-amber-800 hover:to-brown-900 hover:shadow-lg"
               >
                 Create Branch
               </button>
@@ -425,7 +425,7 @@ export default function CompanyBranchesPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={handleSave}
-                    className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                    className="rounded-lg bg-gradient-to-r from-amber-700 to-amber-900 px-4 py-2 text-white transition-all hover:from-amber-800 hover:to-brown-900"
                   >
                     Save
                   </button>
@@ -452,7 +452,7 @@ export default function CompanyBranchesPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEdit(branch)}
-                      className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                      className="rounded-lg bg-gradient-to-r from-amber-700 to-amber-900 px-4 py-2 text-white transition-all hover:from-amber-800 hover:to-brown-900"
                     >
                       Edit
                     </button>
@@ -473,7 +473,7 @@ export default function CompanyBranchesPage() {
                       href={branch.mapUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800"
+                      className="text-amber-700 hover:text-amber-900"
                     >
                       🗺️ View on Map
                     </a>

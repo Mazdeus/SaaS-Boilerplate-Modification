@@ -165,7 +165,7 @@ export default function HeroManagementPage() {
             />
             <button
               onClick={handleCreate}
-              className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              className="rounded-lg bg-gradient-to-r from-amber-700 to-amber-900 px-4 py-2 text-white transition-all hover:from-amber-800 hover:to-brown-900 hover:shadow-lg"
             >
               Create Hero Section
             </button>
@@ -221,7 +221,7 @@ export default function HeroManagementPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={handleSave}
-                    className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                    className="rounded-lg bg-gradient-to-r from-amber-700 to-amber-900 px-4 py-2 text-white transition-all hover:from-amber-800 hover:to-brown-900"
                   >
                     Save
                   </button>
@@ -247,7 +247,7 @@ export default function HeroManagementPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEdit(hero)}
-                      className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                      className="rounded-lg bg-gradient-to-r from-amber-700 to-amber-900 px-4 py-2 text-white transition-all hover:from-amber-800 hover:to-brown-900"
                     >
                       Edit
                     </button>

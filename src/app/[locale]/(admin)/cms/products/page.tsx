@@ -343,13 +343,13 @@ export default function ProductsManagementPage() {
                       {product.description}
                     </p>
                     {product.collectionId && (
-                      <p className="mt-1 text-xs text-blue-600">
+                      <p className="mt-1 text-xs text-amber-700">
                         Collection ID: {product.collectionId}
                       </p>
                     )}
                     <div className="mt-2 flex gap-2">
                       {product.isFeatured && (
-                        <span className="inline-block rounded bg-blue-100 px-2 py-1 text-xs text-blue-800">
+                        <span className="inline-block rounded bg-amber-100 px-2 py-1 text-xs text-amber-800">
                           Featured
                         </span>
                       )}
