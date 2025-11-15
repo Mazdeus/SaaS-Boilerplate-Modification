@@ -22,7 +22,6 @@ async function getStores() {
     return [];
   }
 }
-}
 
 export default async function StoresPage() {
   const stores = await getStores();
