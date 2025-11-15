@@ -23,16 +23,36 @@ interface Store {
 
 async function getStores(): Promise<Store[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    // For server-side rendering, use internal API call
+    const isServer = typeof window === 'undefined';
+    
+    let baseUrl: string;
+    if (isServer) {
+      // In Docker container, use localhost:3000
+      baseUrl = 'http://localhost:3000';
+    } else {
+      // Client-side, use public API URL or current origin
+      baseUrl = process.env.NEXT_PUBLIC_API_URL || window.location.origin;
+    }
+    
+    console.log('[Stores] Fetching from:', `${baseUrl}/api/stores`, 'isServer:', isServer);
+    
     const res = await fetch(`${baseUrl}/api/stores`, {
       cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
+    console.log('[Stores] Response status:', res.status);
+
     if (!res.ok) {
+      console.error('[Stores] API response not OK:', res.status, res.statusText);
       return [];
     }
 
     const data = await res.json();
+    console.log('[Stores] Data received:', data.data?.length || 0, 'items');
     return data.data || [];
   } catch (error) {
     console.error('Error fetching stores:', error);

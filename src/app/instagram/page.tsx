@@ -13,6 +13,7 @@ export default function InstagramPage() {
     script.src = 'https://www.juicer.io/embed/bro-do-24f67da1-0036-4210-8d6b-e6110211de24/embed-code.js';
     script.async = true;
     script.defer = true;
+    script.id = 'juicer-script'; // Add unique ID
 
     let timeoutId: NodeJS.Timeout;
     let checkInterval: NodeJS.Timeout;
@@ -23,11 +24,13 @@ export default function InstagramPage() {
       // Check if content actually loads after script is loaded
       // Wait a bit for Juicer to initialize and fetch data
       timeoutId = setTimeout(() => {
-        const juicerFeed = document.querySelector('.juicer-feed');
-        const juicerItems = document.querySelectorAll('.juicer-feed li');
+        // Only check within our specific container
+        const juicerContainer = document.getElementById('instagram-feed-container');
+        const juicerFeed = juicerContainer?.querySelector('.juicer-feed');
+        const juicerItems = juicerContainer?.querySelectorAll('.juicer-feed li');
         
         // If no items loaded after timeout, show fallback
-        if (!juicerFeed || juicerItems.length === 0) {
+        if (!juicerFeed || !juicerItems || juicerItems.length === 0) {
           console.warn('Juicer feed loaded but no content appeared - likely CORS error');
           setShowFallback(true);
         }
@@ -37,8 +40,9 @@ export default function InstagramPage() {
       // Also check periodically if content appears
       let attempts = 0;
       checkInterval = setInterval(() => {
-        const juicerItems = document.querySelectorAll('.juicer-feed li');
-        if (juicerItems.length > 0) {
+        const juicerContainer = document.getElementById('instagram-feed-container');
+        const juicerItems = juicerContainer?.querySelectorAll('.juicer-feed li');
+        if (juicerItems && juicerItems.length > 0) {
           // Content loaded successfully
           clearTimeout(timeoutId);
           clearInterval(checkInterval);
@@ -59,14 +63,19 @@ export default function InstagramPage() {
       setIsLoading(false);
     };
 
-    document.body.appendChild(script);
+    // Check if script already exists
+    const existingScript = document.getElementById('juicer-script');
+    if (!existingScript) {
+      document.body.appendChild(script);
+    }
 
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
       if (checkInterval) clearInterval(checkInterval);
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
+      // Don't remove script to prevent duplicate loading
+      // if (document.body.contains(script)) {
+      //   document.body.removeChild(script);
+      // }
     };
   }, []);
 
@@ -159,9 +168,9 @@ export default function InstagramPage() {
               </div>
             )}
 
-            {/* Juicer.io Feed Container */}
+            {/* Juicer.io Feed Container - with unique ID */}
             {!showFallback && (
-              <div className={`juicer-feed-container ${isLoading ? 'hidden' : ''}`}>
+              <div id="instagram-feed-container" className={`juicer-feed-container ${isLoading ? 'hidden' : ''}`}>
                 <ul className="juicer-feed" data-feed-id="bro-do" data-per="12"></ul>
               </div>
             )}
