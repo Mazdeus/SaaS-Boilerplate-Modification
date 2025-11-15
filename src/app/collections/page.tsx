@@ -3,63 +3,30 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getCollectionUrl } from '@/lib/collection-urls';
+import { db } from '@/db';
+import { collections } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
-interface Collection {
-  id: number;
-  name: string;
-  slug: string;
-  description: string | null;
-  imageUrl: string | null;
-  isActive: boolean;
-  displayOrder: number;
-}
-
-async function getCollections(): Promise<Collection[]> {
+async function getCollections() {
   try {
-    // For server-side rendering, use internal API call
-    // Check if we're running in server (no window object)
-    const isServer = typeof window === 'undefined';
-    
-    let baseUrl: string;
-    if (isServer) {
-      // In Docker container, use localhost:3000
-      // In development, use localhost:3000
-      baseUrl = 'http://localhost:3000';
-    } else {
-      // Client-side, use public API URL or current origin
-      baseUrl = process.env.NEXT_PUBLIC_API_URL || window.location.origin;
-    }
-    
-    console.log('[Collections] Fetching from:', `${baseUrl}/api/collections`, 'isServer:', isServer);
-    
-    const res = await fetch(`${baseUrl}/api/collections`, {
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    console.log('[Collections] Response status:', res.status);
-
-    if (!res.ok) {
-      console.error('[Collections] API response not OK:', res.status, res.statusText);
-      return [];
-    }
-
-    const data = await res.json();
-    console.log('[Collections] Data received:', data.data?.length || 0, 'items');
-    return data.data || [];
+    const collectionsList = await db
+      .select()
+      .from(collections)
+      .where(eq(collections.isActive, true))
+      .orderBy(collections.displayOrder);
+    return collectionsList;
   } catch (error) {
-    console.error('Error fetching collections:', error);
+    console.error('Error fetching collections from database:', error);
     return [];
   }
 }
 
 export default async function CollectionsPage() {
-  const collections = await getCollections();
+  const collectionsList = await getCollections();
 
   return (
     <>
@@ -82,7 +49,7 @@ export default async function CollectionsPage() {
         {/* Collections Grid */}
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
-            {collections.length === 0 ? (
+            {collectionsList.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-gray-500 text-lg">
                   Tidak ada koleksi yang tersedia saat ini.
@@ -90,7 +57,7 @@ export default async function CollectionsPage() {
               </div>
             ) : (
               <div className="flex flex-wrap gap-8 justify-center max-w-6xl mx-auto">
-                {collections.map((collection) => (
+                {collectionsList.map((collection) => (
                   <div
                     key={collection.id}
                     className="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.375rem)] max-w-sm"

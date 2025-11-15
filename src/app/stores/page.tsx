@@ -1,63 +1,27 @@
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { db } from '@/db';
+import { stores } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
-interface Store {
-  id: number;
-  name: string;
-  address: string;
-  city: string;
-  province: string;
-  postalCode: string | null;
-  phone: string | null;
-  email: string | null;
-  openingHours: string | null;
-  mapsUrl: string | null;
-  imageUrl: string | null;
-  instagramUsername: string | null;
-  isActive: boolean;
-}
-
-async function getStores(): Promise<Store[]> {
+async function getStores() {
   try {
-    // For server-side rendering, use internal API call
-    const isServer = typeof window === 'undefined';
-    
-    let baseUrl: string;
-    if (isServer) {
-      // In Docker container, use localhost:3000
-      baseUrl = 'http://localhost:3000';
-    } else {
-      // Client-side, use public API URL or current origin
-      baseUrl = process.env.NEXT_PUBLIC_API_URL || window.location.origin;
-    }
-    
-    console.log('[Stores] Fetching from:', `${baseUrl}/api/stores`, 'isServer:', isServer);
-    
-    const res = await fetch(`${baseUrl}/api/stores`, {
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    console.log('[Stores] Response status:', res.status);
-
-    if (!res.ok) {
-      console.error('[Stores] API response not OK:', res.status, res.statusText);
-      return [];
-    }
-
-    const data = await res.json();
-    console.log('[Stores] Data received:', data.data?.length || 0, 'items');
-    return data.data || [];
+    const storesList = await db
+      .select()
+      .from(stores)
+      .where(eq(stores.isActive, true))
+      .orderBy(stores.displayOrder);
+    return storesList;
   } catch (error) {
-    console.error('Error fetching stores:', error);
+    console.error('Error fetching stores from database:', error);
     return [];
   }
+}
 }
 
 export default async function StoresPage() {
@@ -137,7 +101,7 @@ export default async function StoresPage() {
                           </div>
                         </div>
 
-                        {store.phone && (
+                        {store.phoneNumber && (
                           <div className="flex items-center">
                             <svg
                               className="w-5 h-5 mr-3 flex-shrink-0 text-brodo-blue-light"
@@ -147,10 +111,10 @@ export default async function StoresPage() {
                               <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                             </svg>
                             <a
-                              href={`tel:${store.phone}`}
+                              href={`tel:${store.phoneNumber}`}
                               className="hover:text-brodo-blue transition-colors"
                             >
-                              {store.phone}
+                              {store.phoneNumber}
                             </a>
                           </div>
                         )}
@@ -174,7 +138,7 @@ export default async function StoresPage() {
                           </div>
                         )}
 
-                        {store.openingHours && (
+                        {store.operatingHours && (
                           <div className="flex items-start">
                             <svg
                               className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-brodo-blue-light"
@@ -187,14 +151,14 @@ export default async function StoresPage() {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            <p>{store.openingHours}</p>
+                            <p>{store.operatingHours}</p>
                           </div>
                         )}
                       </div>
 
-                      {store.mapsUrl && (
+                      {store.mapUrl && (
                         <a
-                          href={store.mapsUrl}
+                          href={store.mapUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="mt-6 inline-flex items-center text-brodo-blue hover:text-brodo-blue-light transition-colors font-medium"
