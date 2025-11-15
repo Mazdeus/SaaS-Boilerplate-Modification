@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brodo-blue: #043958;
+    --brodo-blue-light: #0a5a8a;
+    --brodo-blue-dark: #022840;
+  }
+
+  * {
+    @apply border-gray-200;
+  }
+
+  body {
+    @apply bg-white text-gray-900 font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+}
+
+@layer components {
+  .container-brodo {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-brodo-blue hover:bg-brodo-blue-dark transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brodo-blue;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-brodo-blue text-base font-medium rounded-lg text-brodo-blue bg-white hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brodo-blue;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-brodo-blue-light hover:bg-brodo-blue transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brodo-blue;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brodo-blue focus:border-transparent transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-card-lg shadow-brodo p-6;
+  }
+
+  .section-padding {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  .section-title {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-brodo-blue mb-4;
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  .section-subtitle {
+    @apply text-lg sm:text-xl text-gray-600 mb-8;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 0.5s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Loading spinner */
+.spinner {
+  @apply inline-block w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin;
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
+/* CMS Sidebar - Ensure it stays fixed */
+aside[class*="bg-brodo-blue"] {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* CMS Sidebar Navigation - Custom scrollbar */
+.sidebar-nav {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* CMS Main Content - Proper scrolling and responsive */
+.cms-main-content {
+  min-height: 100vh;
+  overflow-y: auto;
+  padding-bottom: 2rem;
+}
+
+/* Mobile top padding untuk CMS - avoid overlap dengan mobile header */
+@media (max-width: 1023px) {
+  .cms-main-content {
+    padding-top: 4.5rem !important; /* 72px - lebih tinggi untuk menghindari overlap */
+  }
+}
+
+/* Ensure mobile header doesn't cover content */
+.cms-mobile-header {
+  height: 3.5rem; /* 56px */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Better responsive tables */
+@media (max-width: 640px) {
+  .cms-main-content {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Prevent content cutoff on small screens */
+.cms-responsive-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
