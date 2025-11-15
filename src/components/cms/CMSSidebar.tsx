@@ -76,14 +76,29 @@ export default function CMSSidebar() {
       });
 
       if (res.ok) {
-        toast.success('Logged out successfully');
-        router.push('/cms/login');
+        // Clear local storage
+        localStorage.removeItem('auth_token');
+        
+        // Show success toast with auto-dismiss
+        const toastId = toast.success('Logged out successfully', {
+          duration: 2000,
+        });
+        
+        // Dismiss toast and navigate
+        setTimeout(() => {
+          toast.dismiss(toastId);
+          router.push('/cms/login');
+        }, 1500);
       } else {
-        toast.error('Failed to logout');
+        toast.error('Failed to logout', {
+          duration: 3000,
+        });
       }
     } catch (error) {
       console.error('Logout error:', error);
-      toast.error('An error occurred');
+      toast.error('An error occurred', {
+        duration: 3000,
+      });
     }
   };
 
