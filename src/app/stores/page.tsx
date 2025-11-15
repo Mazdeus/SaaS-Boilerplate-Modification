@@ -56,6 +56,9 @@ export default async function StoresPage() {
               </h1>
               <p className="text-lg md:text-xl text-gray-200">
                 Kunjungi kami di lokasi kami di seluruh Indonesia
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* Stores List */}
