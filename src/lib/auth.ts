@@ -12,10 +12,11 @@ export interface JWTPayload {
 
 /**
  * Generate JWT token for authenticated user
+ * Token expires in 10 minutes for security
  */
 export function generateToken(payload: JWTPayload): string {
   return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: '7d', // Token expires in 7 days
+    expiresIn: '10m', // Token expires in 10 minutes
   });
 }
 

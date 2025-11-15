@@ -21,18 +21,27 @@ export default function LoginPage() {
       const response = await axios.post('/api/auth/login', formData);
       
       if (response.data.success) {
-        toast.success('Login successful!');
+        // Show success toast with auto-dismiss
+        const toastId = toast.success('Login successful!', {
+          duration: 2000, // Show for 2 seconds
+        });
+        
         // Store token in localStorage as backup
         if (response.data.data.token) {
           localStorage.setItem('auth_token', response.data.data.token);
         }
+        
+        // Dismiss toast and navigate
         setTimeout(() => {
+          toast.dismiss(toastId);
           router.push('/cms/dashboard');
-        }, 1000);
+        }, 1500);
       }
     } catch (error: any) {
       const message = error.response?.data?.error || 'Login failed';
-      toast.error(message);
+      toast.error(message, {
+        duration: 4000, // Show error for 4 seconds
+      });
     } finally {
       setLoading(false);
     }
@@ -40,7 +49,33 @@ export default function LoginPage() {
 
   return (
     <>
-      <Toaster position="top-right" />
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          // Default options
+          duration: 3000,
+          style: {
+            background: '#fff',
+            color: '#363636',
+          },
+          // Success toast style
+          success: {
+            duration: 2000,
+            iconTheme: {
+              primary: '#10B981',
+              secondary: '#fff',
+            },
+          },
+          // Error toast style
+          error: {
+            duration: 4000,
+            iconTheme: {
+              primary: '#EF4444',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
       <div className="min-h-screen bg-gradient-to-br from-brodo-blue to-brodo-blue-dark flex items-center justify-center px-4">
         <div className="max-w-md w-full">
           <div className="bg-white rounded-card-lg shadow-brodo-lg p-8">
@@ -100,14 +135,7 @@ export default function LoginPage() {
               </button>
             </form>
 
-            {/* Default Credentials Info */}
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-              <p className="text-xs text-gray-600 text-center">
-                <strong>Default credentials:</strong><br />
-                Email: admin@brodo.co.id<br />
-                Password: admin123
-              </p>
-            </div>
+            
           </div>
         </div>
       </div>

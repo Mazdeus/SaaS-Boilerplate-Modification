@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CMSSidebar from '@/components/cms/CMSSidebar';
+import SessionTimer from '@/components/cms/SessionTimer';
 
 interface DashboardStats {
   heroSections: number;
@@ -15,8 +16,16 @@ interface DashboardStats {
   teamMembers: number;
 }
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+}
+
 export default function CMSDashboard() {
   const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
   const [stats, setStats] = useState<DashboardStats>({
     heroSections: 0,
     collections: 0,
@@ -35,6 +44,11 @@ export default function CMSDashboard() {
         if (!response.ok) {
           router.push('/cms/login');
           return;
+        }
+        
+        const data = await response.json();
+        if (data.success && data.data.user) {
+          setUser(data.data.user);
         }
         
         // Fetch dashboard stats
@@ -98,18 +112,38 @@ export default function CMSDashboard() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
+      {/* Session Timer */}
+      <SessionTimer />
+      
       {/* Sidebar */}
       <CMSSidebar />
       
       {/* Main Content */}
       <div className="flex-1 lg:ml-64 cms-main-content">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-          {/* Header */}
+          {/* Header with Welcome Message */}
           <div className="mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="mt-2 text-sm text-gray-600">
-              Welcome to BRODO CMS. Manage your content below.
-            </p>
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  {user ? `Halo, ${user.name}!` : 'Dashboard'}
+                </h1>
+                <p className="mt-2 text-sm text-gray-600">
+                  Welcome to BRODO CMS. Manage your content below.
+                </p>
+              </div>
+              {user && (
+                <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-brodo-blue-light/10 rounded-lg border border-brodo-blue-light">
+                  <div className="w-10 h-10 bg-brodo-blue text-white rounded-full flex items-center justify-center font-semibold">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                    <p className="text-xs text-gray-500">{user.role}</p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
         {/* Stats Overview */}

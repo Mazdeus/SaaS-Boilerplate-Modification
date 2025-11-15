@@ -256,12 +256,35 @@ docker-compose logs app
 ```
 
 ### Problem: Port 3000 sudah digunakan
+
+**Quick Fix dengan Script:**
+```bash
+chmod +x scripts/fix-port-conflict.sh
+./scripts/fix-port-conflict.sh
+```
+
+**Manual Fix:**
 ```bash
 # Check what's using port 3000
 sudo lsof -i :3000
 
-# Kill process if needed
+# If it's a Docker container
+docker ps -a
+docker stop <container_id>
+docker rm <container_id>
+
+# If it's another process
 sudo kill -9 <PID>
+
+# Verify port is free
+sudo lsof -i :3000
+```
+
+**Alternative: Use different port**
+Edit `docker-compose.yml`:
+```yaml
+ports:
+  - "3001:3000"  # Use port 3001 instead
 ```
 
 ### Problem: Database connection error
