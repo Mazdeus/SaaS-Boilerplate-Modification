@@ -36,9 +36,21 @@ export function verifyToken(token: string): JWTPayload | null {
  * Get token from cookies (server-side)
  */
 export async function getTokenFromCookies(): Promise<string | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('auth_token');
-  return token?.value || null;
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('auth_token');
+    
+    if (token?.value) {
+      console.log('[Auth] Token found in cookies');
+      return token.value;
+    }
+    
+    console.log('[Auth] No token in cookies');
+    return null;
+  } catch (error) {
+    console.error('[Auth] Error reading cookies:', error);
+    return null;
+  }
 }
 
 /**

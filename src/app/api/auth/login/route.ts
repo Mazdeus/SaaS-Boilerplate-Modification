@@ -49,6 +49,13 @@ export async function POST(request: NextRequest) {
       role: user.role,
     });
 
+    console.log('[Login] User authenticated:', {
+      userId: user.id,
+      email: user.email,
+      name: user.fullName || user.username,
+      tokenGenerated: !!token,
+    });
+
     // Set cookie
     const response = successResponse(
       {
@@ -63,13 +70,18 @@ export async function POST(request: NextRequest) {
       'Login successful'
     );
 
+    // Set cookie with appropriate settings
+    // Note: secure is set to false for HTTP deployments (like Azure VM with IP)
+    // If you use HTTPS with a domain, change secure to true
     response.cookies.set('auth_token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: false, // Set to true only when using HTTPS
       sameSite: 'lax',
       maxAge: 60 * 10, // 10 minutes (600 seconds)
       path: '/',
     });
+
+    console.log('[Login] Cookie set successfully');
 
     return response;
   } catch (error) {

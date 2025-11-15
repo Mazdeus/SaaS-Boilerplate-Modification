@@ -21,6 +21,8 @@ export default function LoginPage() {
       const response = await axios.post('/api/auth/login', formData);
       
       if (response.data.success) {
+        console.log('[Login] Success response:', response.data);
+        
         // Show success toast with auto-dismiss
         const toastId = toast.success('Login successful!', {
           duration: 2000, // Show for 2 seconds
@@ -29,6 +31,17 @@ export default function LoginPage() {
         // Store token in localStorage as backup
         if (response.data.data.token) {
           localStorage.setItem('auth_token', response.data.data.token);
+          console.log('[Login] Token stored in localStorage');
+        }
+        
+        // Check if we can access /api/auth/me before redirecting
+        try {
+          const meResponse = await axios.get('/api/auth/me');
+          console.log('[Login] Auth check successful:', meResponse.data);
+        } catch (authError) {
+          console.error('[Login] Auth check failed:', authError);
+          toast.error('Authentication failed. Please try again.');
+          return;
         }
         
         // Dismiss toast and navigate
@@ -38,6 +51,7 @@ export default function LoginPage() {
         }, 1500);
       }
     } catch (error: any) {
+      console.error('[Login] Error:', error);
       const message = error.response?.data?.error || 'Login failed';
       toast.error(message, {
         duration: 4000, // Show error for 4 seconds
