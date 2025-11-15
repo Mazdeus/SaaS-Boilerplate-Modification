@@ -11,6 +11,9 @@ import {
 } from '@/lib/api-response';
 import { desc, eq } from 'drizzle-orm';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/contact-messages
  * Protected endpoint - Get all contact messages (CMS only)

@@ -7,6 +7,9 @@ import { generateToken } from '@/lib/auth';
 import { successResponse, errorResponse, validationErrorResponse } from '@/lib/api-response';
 import { eq } from 'drizzle-orm';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

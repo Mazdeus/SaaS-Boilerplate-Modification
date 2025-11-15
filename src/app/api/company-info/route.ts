@@ -5,6 +5,9 @@ import { successResponse, errorResponse, validationErrorResponse, unauthorizedRe
 import { requireAuth } from '@/lib/auth';
 import { companyInfoSchema } from '@/lib/validations';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/company-info
  * Public endpoint - Get company information

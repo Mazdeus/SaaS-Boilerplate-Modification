@@ -5,6 +5,9 @@ import { successResponse, errorResponse, validationErrorResponse, unauthorizedRe
 import { requireAuth } from '@/lib/auth';
 import { seoSettingSchema } from '@/lib/validations';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/seo-settings
  * Public endpoint - Get SEO settings

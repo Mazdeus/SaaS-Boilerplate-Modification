@@ -12,6 +12,9 @@ import {
 import { eq, desc } from 'drizzle-orm';
 import { normalizeDisplayOrder } from '@/lib/display-order';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/testimonials
  * Get testimonials - returns all for CMS (authenticated), active only for public

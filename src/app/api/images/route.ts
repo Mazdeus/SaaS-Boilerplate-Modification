@@ -9,6 +9,9 @@ import {
 } from '@/lib/api-response';
 import { eq, asc, like } from 'drizzle-orm';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/images
  * Public endpoint - Get all images (optionally filter by category)

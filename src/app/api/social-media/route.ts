@@ -9,6 +9,9 @@ import {
 } from '@/lib/api-response';
 import { eq, asc } from 'drizzle-orm';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/social-media
  * Public endpoint - Get all active social media links

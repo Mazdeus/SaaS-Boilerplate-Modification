@@ -11,6 +11,9 @@ import {
 } from '@/lib/api-response';
 import { eq, desc } from 'drizzle-orm';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/hero-sections
  * Get hero sections - returns all for CMS (authenticated), active only for public

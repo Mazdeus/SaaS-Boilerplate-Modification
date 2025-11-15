@@ -1,0 +1,4 @@
+// Add this line after imports in ALL API route files that use authentication
+
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';

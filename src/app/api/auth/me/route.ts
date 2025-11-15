@@ -2,6 +2,9 @@ import { NextRequest } from 'next/server';
 import { verifyAuth } from '@/lib/auth';
 import { successResponse, unauthorizedResponse } from '@/lib/api-response';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const user = await verifyAuth();

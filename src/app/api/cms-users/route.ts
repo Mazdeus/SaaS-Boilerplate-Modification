@@ -13,6 +13,10 @@ import { desc } from 'drizzle-orm';
  * GET /api/cms-users
  * Protected endpoint - Get all CMS users
  */
+
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     await requireAuth();

@@ -11,6 +11,9 @@ import {
 } from '@/lib/api-response';
 import { eq } from 'drizzle-orm';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/about
  * Public endpoint - Get about information

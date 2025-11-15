@@ -11,6 +11,9 @@ import {
 } from '@/lib/api-response';
 import { eq, asc } from 'drizzle-orm';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/company-values
  * Get company values - returns all for CMS (authenticated), active only for public

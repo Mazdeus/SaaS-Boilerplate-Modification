@@ -7,6 +7,9 @@ import { requireAuth } from '@/lib/auth';
 import { successResponse, errorResponse, validationErrorResponse, unauthorizedResponse } from '@/lib/api-response';
 import { eq } from 'drizzle-orm';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     // Only super_admin can create new users

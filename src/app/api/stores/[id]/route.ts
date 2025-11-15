@@ -7,6 +7,9 @@ import { storeSchema } from '@/lib/validations';
 import { eq } from 'drizzle-orm';
 import { normalizeDisplayOrder } from '@/lib/display-order';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 /**
  * PATCH /api/stores/[id]
  * Protected endpoint - Update store
