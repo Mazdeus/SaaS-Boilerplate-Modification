@@ -4,6 +4,9 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getCollectionUrl } from '@/lib/collection-urls';
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 interface Collection {
   id: number;
   name: string;

@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 interface CollectionImage {
   id: number;
   imageUrl: string;

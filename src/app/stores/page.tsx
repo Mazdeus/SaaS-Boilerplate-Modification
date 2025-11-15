@@ -2,6 +2,9 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 interface Store {
   id: number;
   name: string;
@@ -52,10 +55,7 @@ export default async function StoresPage() {
                 Toko Kami
               </h1>
               <p className="text-lg md:text-xl text-gray-200">
-                Kunjungi kami di lokasi kami di seluruh Indonesia. Rasakan kualitas dan keahlian secara langsung.
-              </p>
-            </div>
-          </div>
+                Kunjungi kami di lokasi kami di seluruh Indonesia
         </section>
 
         {/* Stores List */}
