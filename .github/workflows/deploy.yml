@@ -1,0 +1,34 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches: [ main, revised ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Deploy to Azure VM
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.AZURE_VM_HOST }}
+        username: ${{ secrets.AZURE_VM_USERNAME }}
+        key: ${{ secrets.AZURE_VM_SSH_KEY }}
+        script: |
+          cd /opt/brodo-cms
+          git pull origin revised
+          sudo docker-compose down
+          sudo docker-compose up -d --build
+          echo "Deployment completed!"
+          sudo docker ps
+    
+    - name: Health Check
+      run: |
+        sleep 30
+        curl -f http://40.81.26.137:3000/api/health || exit 1
+        echo "Health check passed!"
