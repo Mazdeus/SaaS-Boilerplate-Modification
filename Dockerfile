@@ -8,7 +8,9 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production
+
+# Install ALL dependencies (including dev dependencies needed for build)
+RUN npm ci
 
 # Stage 2: Builder
 FROM node:18-alpine AS builder
@@ -16,6 +18,8 @@ WORKDIR /app
 
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
+
+# Copy all source files
 COPY . .
 
 # Set environment variables for build
