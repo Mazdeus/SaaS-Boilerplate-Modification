@@ -9,26 +9,10 @@ export default function InstagramPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Clean up any existing Juicer elements first
-    const cleanupExisting = () => {
-      // Remove any existing Juicer feeds
-      const existingFeeds = document.querySelectorAll('.juicer-feed');
-      existingFeeds.forEach(feed => {
-        // Only remove if not in our container
-        const container = feed.closest('#instagram-feed-container');
-        if (!container) {
-          feed.remove();
-        }
-      });
-    };
-
-    cleanupExisting();
-
     const script = document.createElement('script');
     script.src = 'https://www.juicer.io/embed/bro-do-24f67da1-0036-4210-8d6b-e6110211de24/embed-code.js';
     script.async = true;
     script.defer = true;
-    script.id = 'juicer-embed-script';
 
     let timeoutId: NodeJS.Timeout;
     let checkInterval: NodeJS.Timeout;
@@ -38,12 +22,10 @@ export default function InstagramPage() {
       
       // Check if content actually loads after script is loaded
       timeoutId = setTimeout(() => {
-        const juicerContainer = document.getElementById('instagram-feed-container');
-        const juicerFeed = juicerContainer?.querySelector('.juicer-feed');
-        const juicerItems = juicerContainer?.querySelectorAll('.juicer-feed li');
+        const juicerItems = document.querySelectorAll('.juicer-feed li');
         
         // If no items loaded after timeout, show fallback
-        if (!juicerFeed || !juicerItems || juicerItems.length === 0) {
+        if (juicerItems.length === 0) {
           console.warn('Juicer feed loaded but no content appeared - showing fallback');
           setShowFallback(true);
         }
@@ -53,13 +35,12 @@ export default function InstagramPage() {
       // Check periodically if content appears
       let attempts = 0;
       checkInterval = setInterval(() => {
-        const juicerContainer = document.getElementById('instagram-feed-container');
-        const juicerItems = juicerContainer?.querySelectorAll('.juicer-feed li');
-        if (juicerItems && juicerItems.length > 0) {
+        const juicerItems = document.querySelectorAll('.juicer-feed li');
+        if (juicerItems.length > 0) {
           clearTimeout(timeoutId);
           clearInterval(checkInterval);
           setIsLoading(false);
-          console.log('Juicer content loaded successfully');
+          console.log('Juicer content loaded successfully:', juicerItems.length, 'items');
         }
         attempts++;
         if (attempts >= 10) {
@@ -74,27 +55,14 @@ export default function InstagramPage() {
       setIsLoading(false);
     };
 
-    // Check if script already exists
-    const existingScript = document.getElementById('juicer-embed-script');
-    if (!existingScript) {
-      document.body.appendChild(script);
-    } else {
-      // Script exists, just check if feed is loaded
-      setTimeout(() => {
-        const juicerContainer = document.getElementById('instagram-feed-container');
-        const juicerItems = juicerContainer?.querySelectorAll('.juicer-feed li');
-        if (!juicerItems || juicerItems.length === 0) {
-          setShowFallback(true);
-        }
-        setIsLoading(false);
-      }, 2000);
-    }
+    document.body.appendChild(script);
 
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
       if (checkInterval) clearInterval(checkInterval);
-      // Clean up on unmount
-      cleanupExisting();
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
     };
   }, []);
 
@@ -161,11 +129,6 @@ export default function InstagramPage() {
       <Navbar />
       <main className="min-h-screen bg-gray-50">
         {/* Hide any Juicer feeds outside our container */}
-        <style>{`
-          .juicer-feed:not(#instagram-feed-container .juicer-feed) {
-            display: none !important;
-          }
-        `}</style>
         
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-brodo-blue via-brodo-blue-light to-brodo-blue-dark text-white py-16 sm:py-20 lg:py-24">
