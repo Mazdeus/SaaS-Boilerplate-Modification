@@ -197,7 +197,7 @@ export default function InstagramPage() {
             {/* Juicer.io Feed Container - with unique ID */}
             {!showFallback && (
               <div id="instagram-feed-container" className={`juicer-feed-container ${isLoading ? 'hidden' : ''}`}>
-                <ul className="juicer-feed" data-feed-id="bro-do" data-per="12"></ul>
+                <ul className="juicer-feed" data-feed-id="bro-do-24f67da1-0036-4210-8d6b-e6110211de24" data-per="12"></ul>
               </div>
             )}
 
