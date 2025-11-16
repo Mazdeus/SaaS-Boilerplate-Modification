@@ -1,19 +1,45 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable standalone output for Docker deployment
+  reactStrictMode: true,
+  
+  // CRITICAL: Enable standalone output for Docker deployment
   output: 'standalone',
   
+  // Production domain
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
+      },
+    ];
+  },
+  
   images: {
+    domains: ['brodofootwear.studio', 'www.brodofootwear.studio'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'brodofootwear.studio',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.brodofootwear.studio',
       },
     ],
-  },
-  env: {
-    DATABASE_URL: process.env.DATABASE_URL,
-    JWT_SECRET: process.env.JWT_SECRET,
   },
 };
 
