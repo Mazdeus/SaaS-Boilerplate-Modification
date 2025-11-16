@@ -1,12 +1,83 @@
 'use client';
 
-import { useState } from 'react';
-import Script from 'next/script';
+import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export default function InstagramPage() {
   const [showFallback, setShowFallback] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.juicer.io/embed/bro-do-bc6c3ae5-dbea-480e-9386-2cb3ea64925f/embed-code.js';
+    script.async = true;
+    script.defer = true;
+    script.id = 'juicer-script'; // Add unique ID
+
+    let timeoutId: NodeJS.Timeout;
+    let checkInterval: NodeJS.Timeout;
+
+    script.onload = () => {
+      console.log('Juicer embed script loaded');
+      
+      // Check if content actually loads after script is loaded
+      // Wait a bit for Juicer to initialize and fetch data
+      timeoutId = setTimeout(() => {
+        // Only check within our specific container
+        const juicerContainer = document.getElementById('instagram-feed-container');
+        const juicerFeed = juicerContainer?.querySelector('.juicer-feed');
+        const juicerItems = juicerContainer?.querySelectorAll('.juicer-feed li');
+        
+        // If no items loaded after timeout, show fallback
+        if (!juicerFeed || !juicerItems || juicerItems.length === 0) {
+          console.warn('Juicer feed loaded but no content appeared - likely CORS error');
+          setShowFallback(true);
+        }
+        setIsLoading(false);
+      }, 5000); // Wait 5 seconds for content to load
+
+      // Also check periodically if content appears
+      let attempts = 0;
+      checkInterval = setInterval(() => {
+        const juicerContainer = document.getElementById('instagram-feed-container');
+        const juicerItems = juicerContainer?.querySelectorAll('.juicer-feed li');
+        if (juicerItems && juicerItems.length > 0) {
+          // Content loaded successfully
+          clearTimeout(timeoutId);
+          clearInterval(checkInterval);
+          setIsLoading(false);
+          console.log('Juicer content loaded successfully');
+        }
+        attempts++;
+        // Stop checking after 10 attempts (5 seconds)
+        if (attempts >= 10) {
+          clearInterval(checkInterval);
+        }
+      }, 500);
+    };
+
+    script.onerror = () => {
+      console.error('Failed to load Juicer embed script');
+      setShowFallback(true);
+      setIsLoading(false);
+    };
+
+    // Check if script already exists
+    const existingScript = document.getElementById('juicer-script');
+    if (!existingScript) {
+      document.body.appendChild(script);
+    }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      if (checkInterval) clearInterval(checkInterval);
+      // Don't remove script to prevent duplicate loading
+      // if (document.body.contains(script)) {
+      //   document.body.removeChild(script);
+      // }
+    };
+  }, []);
 
   // Fallback Instagram posts
   const instagramPosts = [
@@ -70,8 +141,6 @@ export default function InstagramPage() {
     <>
       <Navbar />
       <main className="min-h-screen bg-gray-50">
-        {/* Hide any Juicer feeds outside our container */}
-        
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-brodo-blue via-brodo-blue-light to-brodo-blue-dark text-white py-16 sm:py-20 lg:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,26 +160,18 @@ export default function InstagramPage() {
         <div className="py-12 sm:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            {/* Juicer.io Feed Container - MUST use <div> not <ul> */}
+            {/* Loading State */}
+            {isLoading && !showFallback && (
+              <div className="text-center py-12">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-brodo-blue"></div>
+                <p className="mt-4 text-gray-600">Memuat konten Instagram...</p>
+              </div>
+            )}
+
+            {/* Juicer.io Feed Container - with unique ID */}
             {!showFallback && (
-              <div id="instagram-feed-container">                <div 
-                  className="juicer-feed" 
-                  data-feed-id="bro-do-b8c0950c-5329-4380-ab9a-b8e84f8cb2b4"
-                  data-per="12"
-                ></div>
-                
-                {/* Load Juicer script using Next.js Script component */}
-                <Script
-                  src="https://www.juicer.io/embed/bro-do-b8c0950c-5329-4380-ab9a-b8e84f8cb2b4/embed-code.js"
-                  strategy="afterInteractive"
-                  onLoad={() => {
-                    console.log('Juicer script loaded');
-                  }}
-                  onError={() => {
-                    console.error('Juicer script failed to load');
-                    setShowFallback(true);
-                  }}
-                />
+              <div id="instagram-feed-container" className={`juicer-feed-container ${isLoading ? 'hidden' : ''}`}>
+                <ul className="juicer-feed" data-feed-id="bro-do-bc6c3ae5-dbea-480e-9386-2cb3ea64925f" data-per="12"></ul>
               </div>
             )}
 
