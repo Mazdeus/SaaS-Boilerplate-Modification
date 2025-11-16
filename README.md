@@ -25,6 +25,13 @@ Complete company profile website with powerful CMS for Brodo - authentic Indones
 - **[DATABASE-SCHEMA-PLAN.md](DATABASE-SCHEMA-PLAN.md)** - Complete schema documentation
 - **[TESTING-CHECKLIST.md](TESTING-CHECKLIST.md)** - QA testing checklist
 
+### 🚀 Deployment & Production
+- **[SETUP-DOMAIN-BRODOFOOTWEAR.md](SETUP-DOMAIN-BRODOFOOTWEAR.md)** - ⭐ **NEW:** Custom domain setup (brodofootwear.studio)
+- **[DEPLOYMENT-STEPS.md](DEPLOYMENT-STEPS.md)** - Azure VM deployment with Docker
+- **[PRODUCTION-ENV-SETUP.md](PRODUCTION-ENV-SETUP.md)** - Production environment configuration
+- **[COMMANDS-CHEATSHEET.md](COMMANDS-CHEATSHEET.md)** - ⭐ **NEW:** Quick reference for common commands
+- **[DOMAIN-SETUP-GUIDE.md](DOMAIN-SETUP-GUIDE.md)** - General domain setup guide
+
 ---
 
 ## 🎉 Recent Updates (v1.2.0)
