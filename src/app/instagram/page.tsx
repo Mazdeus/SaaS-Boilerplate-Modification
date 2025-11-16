@@ -1,70 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export default function InstagramPage() {
   const [showFallback, setShowFallback] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://www.juicer.io/embed/bro-do-24f67da1-0036-4210-8d6b-e6110211de24/embed-code.js';
-    script.async = true;
-    script.defer = true;
-
-    let timeoutId: NodeJS.Timeout;
-    let checkInterval: NodeJS.Timeout;
-
-    script.onload = () => {
-      console.log('Juicer embed script loaded');
-      
-      // Check if content actually loads after script is loaded
-      timeoutId = setTimeout(() => {
-        const juicerItems = document.querySelectorAll('.juicer-feed li');
-        
-        // If no items loaded after timeout, show fallback
-        if (juicerItems.length === 0) {
-          console.warn('Juicer feed loaded but no content appeared - showing fallback');
-          setShowFallback(true);
-        }
-        setIsLoading(false);
-      }, 5000);
-
-      // Check periodically if content appears
-      let attempts = 0;
-      checkInterval = setInterval(() => {
-        const juicerItems = document.querySelectorAll('.juicer-feed li');
-        if (juicerItems.length > 0) {
-          clearTimeout(timeoutId);
-          clearInterval(checkInterval);
-          setIsLoading(false);
-          console.log('Juicer content loaded successfully:', juicerItems.length, 'items');
-        }
-        attempts++;
-        if (attempts >= 10) {
-          clearInterval(checkInterval);
-        }
-      }, 500);
-    };
-
-    script.onerror = () => {
-      console.error('Failed to load Juicer embed script');
-      setShowFallback(true);
-      setIsLoading(false);
-    };
-
-    document.body.appendChild(script);
-
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-      if (checkInterval) clearInterval(checkInterval);
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
 
   // Fallback Instagram posts
   const instagramPosts = [
@@ -149,18 +91,27 @@ export default function InstagramPage() {
         <div className="py-12 sm:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            {/* Loading State */}
-            {isLoading && !showFallback && (
-              <div className="text-center py-12">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-brodo-blue"></div>
-                <p className="mt-4 text-gray-600">Memuat konten Instagram...</p>
-              </div>
-            )}
-
             {/* Juicer.io Feed Container - MUST use <div> not <ul> */}
             {!showFallback && (
-              <div id="instagram-feed-container" className={`juicer-feed-container ${isLoading ? 'hidden' : ''}`}>
-                <div className="juicer-feed" data-feed-id="bro-do-24f67da1-0036-4210-8d6b-e6110211de24" data-per="12"></div>
+              <div id="instagram-feed-container">
+                <div 
+                  className="juicer-feed" 
+                  data-feed-id="bro-do-24f67da1-0036-4210-8d6b-e6110211de24" 
+                  data-per="12"
+                ></div>
+                
+                {/* Load Juicer script using Next.js Script component */}
+                <Script
+                  src="https://www.juicer.io/embed/bro-do-24f67da1-0036-4210-8d6b-e6110211de24/embed-code.js"
+                  strategy="afterInteractive"
+                  onLoad={() => {
+                    console.log('Juicer script loaded');
+                  }}
+                  onError={() => {
+                    console.error('Juicer script failed to load');
+                    setShowFallback(true);
+                  }}
+                />
               </div>
             )}
 
