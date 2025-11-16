@@ -93,16 +93,15 @@ export default function InstagramPage() {
             
             {/* Juicer.io Feed Container - MUST use <div> not <ul> */}
             {!showFallback && (
-              <div id="instagram-feed-container">
-                <div 
+              <div id="instagram-feed-container">                <div 
                   className="juicer-feed" 
-                  data-feed-id="bro-do-24f67da1-0036-4210-8d6b-e6110211de24" 
+                  data-feed-id="bro-do-b8c0950c-5329-4380-ab9a-b8e84f8cb2b4"
                   data-per="12"
                 ></div>
                 
                 {/* Load Juicer script using Next.js Script component */}
                 <Script
-                  src="https://www.juicer.io/embed/bro-do-24f67da1-0036-4210-8d6b-e6110211de24/embed-code.js"
+                  src="https://www.juicer.io/embed/bro-do-b8c0950c-5329-4380-ab9a-b8e84f8cb2b4/embed-code.js"
                   strategy="afterInteractive"
                   onLoad={() => {
                     console.log('Juicer script loaded');
